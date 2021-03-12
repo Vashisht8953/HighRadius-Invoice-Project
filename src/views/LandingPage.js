@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
         // left: '30px',
         // width: '141px',
         // height: '31px',
+        paddingLeft: '20px'
     },
     InvoiceTable: {
         // display: 'flex',
@@ -78,8 +79,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         // width: '1603.620px',
         // width: '80%',
-        // position: 'static',
+        // height: 600, 
+        width: 1553.620,
+        position: 'static',
         background: '#273D49CC',
+        
     },
     DataTable: {
         // width: '99%',
@@ -156,7 +160,7 @@ const rows = [
 const DataTable = (props) => {
     const classes = useStyles();
     return (
-        <TableContainer style={{ height: 600, width: 1573.620 }}>
+        <TableContainer style={{ height: 565, width: 1573.620 }}>
             <Table className={classes.DataTable} stickyHeader aria-label="customized table">
                 <TableHead>
                     <TableRow>
@@ -192,8 +196,8 @@ const DataTable = (props) => {
 const Bar = (props) => {
     const classes = useStyles();
     return (
-        <AppBar className={classes.ToolBar}>
-            <Toolbar>
+        <AppBar className={classes.ToolBar} style={{ boxShadow: 'none', borderBottom: 'none' }}>
+            <Toolbar style={{  }}>
                 <Button color="#97A1A9">Predict</Button>
             </Toolbar>
         </AppBar>
@@ -211,8 +215,8 @@ const LandingPage = (props) => {
                 Invoice List
             </div>
             <div className={classes.InvoiceTable}>
-                <div>
-                    {/* <Bar/> */}
+                <div style={{ paddingLeft: '19px' }}>
+                    <Bar/>
                 </div>
                 <div>
                     <DataTable/>
