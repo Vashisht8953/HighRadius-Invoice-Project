@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { ReactComponent as ABCLogo } from '../assets/companyLogo.svg';
+import { ReactComponent as ABCLogo } from '../assets/ABCLogoFull.svg';
 import { ReactComponent as HRCLogo } from '../assets/hrcLogo.svg';
+import { ReactComponent as searchIcon } from '../assets/searchIcon.svg'
 import { pxToRem } from '../utils/theme';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,17 +10,20 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { AppBar, Toolbar, Button } from '@material-ui/core'
+import { AppBar, Toolbar, Button, TextField, Input } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
         display: 'flex',
         flexDirection: 'column',
-        // border: '10px solid black',
+        // border: '1px solid black',
     },
     Header: {
         display: 'flex',
         paddingBlock: '5px',
+        width: 1553.620,
+        // paddinLeft: '20px'
+        // border: '2px solid black',
     },
     ABCContainer: {
         display: 'flex',
@@ -30,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
         width: pxToRem('44px'),
         height: pxToRem('46px'),
         paddingLeft: '5px',
+        opacity: 1,
+        // background: '#CD7925',
         // paddingTop: pxToRem('10px'),
         // background: '#CD7925 0% 0% no-repeat padding-box',
     },
@@ -45,28 +51,32 @@ const useStyles = makeStyles((theme) => ({
     HRCLogo: {
         position: 'absolute',
         top: '0%',
-        width: '100%',
+        // width: '100%',
         textAlign: 'center',
         paddingBlock: '10px',
+        // border: '2px solid black',
+        width: window.innerWidth - 40,
     },
     InvoiceList: {
         font: 'Ubuntu',
         fontSize: '20px',
         color: '#FFFFFF',
-        paddingInline: '10px',
-        paddingTop: '5px',
-        paddingBottom: '10px',
+        // paddingInline: '10px',
+        paddingTop: '10px',
+        paddingBottom: '20px',
+        paddingLeft: '20px',
+        width: '120px',
         // top: '100px',
         // left: '30px',
         // width: '141px',
         // height: '31px',
-        paddingLeft: '20px'
+        // paddingLeft: '40px'
     },
     InvoiceTable: {
         // display: 'flex',
         // flexDirection: 'column',
         // top: '20%',
-
+        // border: '10px solid black',
         // top: '161px',
         // left: '30px',
         // width: '90%',
@@ -80,16 +90,22 @@ const useStyles = makeStyles((theme) => ({
         // width: '1603.620px',
         // width: '80%',
         // height: 600, 
-        width: 1553.620,
+        // width: 1553.620,
+        width: window.innerWidth - 40,
         position: 'static',
         background: '#273D49CC',
-        
+        boxShadow: 'none', 
+        borderBottom: 'none',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
     },
     DataTable: {
         // width: '99%',
         // border: '10px solid black',
         paddingLeft: '20px',
         // padding
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     tableHeading: {
         backgroundColor: '#273D49CC',
@@ -113,6 +129,45 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         borderBottom: 'none',
     },
+    PredictButton: {
+        color: '#FFFFFF',
+        background: '#97A1A9',
+        // font: 'Ubuntu',
+        // fontFamily: 'normal',
+        textTransform: 'none',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        height: '45px',
+        borderRadius: 10,
+    },
+    ViewCorrespondence: {
+        color: '#97A1A9',
+        background: 'transparent',
+        border: '1px solid #97A1A9',
+        borderRadius: 10,
+        textTransform: 'none',
+        height: '45px',
+    },
+    searchByInvoiceNumber: {
+        color: '#97A1A9',
+        borderBottom: 'none',
+        border: '1px solid #356680',
+        background: '#283A46',
+        borderRadius: 10,
+        paddingLeft: '10px',
+        paddingRight: '84px',
+        disableUnderline: true,
+        height: '45px',
+        borderBottom: '1px solid #356680',
+        width: '340px',
+    },
+    DeleteButton: {
+        color: '#97A1A9',
+        border: '1px solid #97A1A9',
+        borderRadius: 10,
+        textTransform: 'none',
+        height: '45px'
+    },
 }));
 
 const Header = (props) => {
@@ -123,9 +178,9 @@ const Header = (props) => {
                 <div className={classes.ABCLogo}>
                     <ABCLogo/> 
                 </div>
-                <div className={classes.ABCText}>
+                {/* <div className={classes.ABCText}>
                     ABC Products
-                </div>
+                </div> */}
             </div>
             <div className={classes.HRCLogo}>
                 <HRCLogo/>
@@ -160,7 +215,7 @@ const rows = [
 const DataTable = (props) => {
     const classes = useStyles();
     return (
-        <TableContainer style={{ height: 565, width: 1573.620 }}>
+        <TableContainer style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 20) }}>
             <Table className={classes.DataTable} stickyHeader aria-label="customized table">
                 <TableHead>
                     <TableRow>
@@ -196,9 +251,28 @@ const DataTable = (props) => {
 const Bar = (props) => {
     const classes = useStyles();
     return (
-        <AppBar className={classes.ToolBar} style={{ boxShadow: 'none', borderBottom: 'none' }}>
-            <Toolbar style={{  }}>
-                <Button color="#97A1A9">Predict</Button>
+        <AppBar className={classes.ToolBar}>
+            <Toolbar style={{ display: 'flex' }}>
+                <div style={{ display: 'flex' }}>
+                    <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
+                        <Button className={classes.PredictButton}>Predict</Button>
+                    </div>
+                    <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
+                        <Button className={classes.ViewCorrespondence}>View Correspondence</Button>
+                    </div>
+                </div>
+                <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
+                    <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
+                        <Button className={classes.DeleteButton}>— Delete</Button>
+                    </div>
+                    <div style={{ paddingTop: '10px', }}>
+                        <Input
+                            className={classes.searchByInvoiceNumber}
+                            placeholder='Search by Invoice Number'
+                            disableUnderline={true}
+                        ></Input>
+                    </div>
+                </div>
             </Toolbar>
         </AppBar>
     )
@@ -208,7 +282,7 @@ const LandingPage = (props) => {
     const classes = useStyles();
     return (
         <div className={classes.LandingPage}>
-            <div>
+            <div style={{paddingLeft: '20px'}}>
                 <Header/>
             </div>
             <div className={classes.InvoiceList}>
