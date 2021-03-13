@@ -7,11 +7,11 @@ import { Provider } from 'react-redux';
 import theme from '../src/utils/theme';
 import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '1603.620px',
-  }
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: '1603.620px',
+//   }
+// }));
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
     mainBackground: {
         top: '0vh',
         left: '0vh',
-        width: '1603.620px',
+        width: window.innerWidth,
         // width: pxToVh('1603.620px'),
         // width: pxto
-        height: '759.991px',
+        height: window.innerHeight,
         // height: pxToVh('759.991px'),
         background: 'transparent radial-gradient(closest-side at 100vh 50vh, #58687E 0vh, #39495E 100vh)',
     }
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
     const classes = useStyles();
+    console.log(window.innerWidth, window.innerHeight);
     return (
         <div className={classes.mainBackground}>
             <Router basename={`/${ROLL_NUMBER}`}>
