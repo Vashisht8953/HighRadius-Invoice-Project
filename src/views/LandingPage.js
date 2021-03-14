@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import { ABCLogo, HRCLogo, SearchIcon, EditIcon } from '../assets'
 import { pxToRem } from '../utils/theme';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
-import { AppBar, Toolbar, Button, Input, InputAdornment } from '@material-ui/core'
+import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -92,6 +92,14 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: 'none',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+    },
+    TableBox: {
+        width: window.innerWidth - 40,
+        background: '#273D49CC',
+        paddinLeft: '20px',
+        paddingBottom: '20px',
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10
     },
     DataTable: {
         width: window.innerWidth - 80,
@@ -192,9 +200,6 @@ const Header = (props) => {
                 <div className={classes.ABCLogo}>
                     <ABCLogo/> 
                 </div>
-                {/* <div className={classes.ABCText}>
-                    ABC Products
-                </div> */}
             </div>
             <div className={classes.HRCLogo}>
                 <HRCLogo/>
@@ -230,7 +235,7 @@ const DataTable = (props) => {
     const classes = useStyles();
     return (
         <div style={{ paddingLeft: '20px' }}>
-            <div style={{ width: window.innerWidth - 40,  background: '#273D49CC', paddinLeft: '20px', paddingBottom: '20px' }}>
+            <div className={classes.TableBox}>
                 <TableContainer style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60) }}>
                     <Table className={classes.DataTable} stickyHeader aria-label="customized table">
                         <TableHead>
@@ -322,7 +327,7 @@ const LandingPage = (props) => {
                     <Bar/>
                 </div>
                 <div>
-                    <DataTable/>
+                    <DataTable />
                 </div>
             </div>
         </div>
