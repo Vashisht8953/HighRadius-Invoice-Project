@@ -1,16 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { ReactComponent as ABCLogo } from '../assets/ABCLogoFull.svg';
-import { ReactComponent as HRCLogo } from '../assets/hrcLogo.svg';
-import { ReactComponent as searchIcon } from '../assets/searchIcon.svg'
+import { ABCLogo, HRCLogo, SearchIcon, EditIcon } from '../assets'
 import { pxToRem } from '../utils/theme';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { AppBar, Toolbar, Button, TextField, Input } from '@material-ui/core'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Input, InputAdornment } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -35,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
         height: pxToRem('46px'),
         paddingLeft: '5px',
         opacity: 1,
+        fill: '#CD7925',
         // background: '#CD7925',
         // paddingTop: pxToRem('10px'),
         // background: '#CD7925 0% 0% no-repeat padding-box',
@@ -155,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
         background: '#283A46',
         borderRadius: 10,
         paddingLeft: '10px',
-        paddingRight: '84px',
+        paddingRight: '10px',
         disableUnderline: true,
         height: '45px',
         borderBottom: '1px solid #356680',
@@ -166,7 +160,16 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #97A1A9',
         borderRadius: 10,
         textTransform: 'none',
-        height: '45px'
+        height: '45px',
+        padding: '15px'
+    },
+    EditButton: {
+        color: '#97A1A9',
+        border: '1px solid #97A1A9',
+        borderRadius: 10,
+        textTransform: 'none',
+        height: '45px',
+        padding: '15px'
     },
 }));
 
@@ -263,6 +266,9 @@ const Bar = (props) => {
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
+                        <Button className={classes.EditButton}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
+                    </div>
+                    <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.DeleteButton}>— Delete</Button>
                     </div>
                     <div style={{ paddingTop: '10px', }}>
@@ -270,6 +276,11 @@ const Bar = (props) => {
                             className={classes.searchByInvoiceNumber}
                             placeholder='Search by Invoice Number'
                             disableUnderline={true}
+                            endAdornment={
+                                <InputAdornment position='end'>
+                                    <SearchIcon/>
+                                </InputAdornment>
+                            }
                         ></Input>
                     </div>
                 </div>
