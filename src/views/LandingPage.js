@@ -122,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
     tableRow: {
         color: '#FFFFFF',
         borderBottom: 'none',
+        height: '10px'
     },
     PredictButton: {
         color: '#FFFFFF',
@@ -169,7 +170,15 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 10,
         textTransform: 'none',
         height: '45px',
-        padding: '15px'
+        padding: '15px',
+    },
+    AddButton: {
+        color: '#FFFFFF',
+        border: '1px solid #14AFF1',
+        borderRadius: 10,
+        textTransform: 'none',
+        height: '45px',
+        padding: '15px',
     },
 }));
 
@@ -265,6 +274,9 @@ const Bar = (props) => {
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
+                    <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
+                        <Button className={classes.AddButton}>+ Add</Button>
+                    </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.EditButton}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
                     </div>
