@@ -94,9 +94,11 @@ const useStyles = makeStyles((theme) => ({
         borderTopRightRadius: 10,
     },
     DataTable: {
-        // width: '99%',
+        width: window.innerWidth - 80,
         // border: '10px solid black',
         paddingLeft: '20px',
+        paddingBottom: '20px',
+        opacity: 1,
         // padding
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
@@ -227,36 +229,40 @@ const rows = [
 const DataTable = (props) => {
     const classes = useStyles();
     return (
-        <TableContainer style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 20) }}>
-            <Table className={classes.DataTable} stickyHeader aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell className={classes.tableHeading}>Customer Name</TableCell>
-                        <TableCell className={classes.tableHeading}>Customer #</TableCell>
-                        <TableCell className={classes.tableHeading}>Invoice #</TableCell>
-                        <TableCell className={classes.tableHeading} align="right">Invoice Amount</TableCell>
-                        <TableCell className={classes.tableHeading} align="right">Due Date</TableCell>
-                        <TableCell className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
-                        <TableCell className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
-                        <TableCell className={classes.tableHeading}>Notes</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody component="th" scope="row">
-                    {rows.map((row) => (
-                        <TableRow className={classes.tableBody}>
-                            <TableCell className={classes.tableRow} align="left">{row.customerName}</TableCell>
-                            <TableCell className={classes.tableRow} align="left">{row.customerNumber}</TableCell>
-                            <TableCell className={classes.tableRow} align="left">{row.invoiceNumber}</TableCell>
-                            <TableCell className={classes.tableRow} align="right">{row.invoiceAmount}</TableCell>
-                            <TableCell className={classes.tableRow} align="right">{row.dueDate}</TableCell>
-                            <TableCell className={classes.tableRow} align="right">{row.predictedPaymentDate}</TableCell>
-                            <TableCell className={classes.tableRow} align="left">{row.predictedAgingBucket}</TableCell>
-                            <TableCell className={classes.tableRow} align="left">{row.notes}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div style={{ paddingLeft: '20px' }}>
+            <div style={{ width: window.innerWidth - 40,  background: '#273D49CC', paddinLeft: '20px', paddingBottom: '20px' }}>
+                <TableContainer style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60) }}>
+                    <Table className={classes.DataTable} stickyHeader aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.tableHeading}>Customer Name</TableCell>
+                                <TableCell className={classes.tableHeading}>Customer #</TableCell>
+                                <TableCell className={classes.tableHeading}>Invoice #</TableCell>
+                                <TableCell className={classes.tableHeading} align="right">Invoice Amount</TableCell>
+                                <TableCell className={classes.tableHeading} align="right">Due Date</TableCell>
+                                <TableCell className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
+                                <TableCell className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
+                                <TableCell className={classes.tableHeading}>Notes</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody component="th" scope="row">
+                            {rows.map((row) => (
+                                <TableRow className={classes.tableBody}>
+                                    <TableCell className={classes.tableRow} align="left">{row.customerName}</TableCell>
+                                    <TableCell className={classes.tableRow} align="left">{row.customerNumber}</TableCell>
+                                    <TableCell className={classes.tableRow} align="left">{row.invoiceNumber}</TableCell>
+                                    <TableCell className={classes.tableRow} align="right">{row.invoiceAmount}</TableCell>
+                                    <TableCell className={classes.tableRow} align="right">{row.dueDate}</TableCell>
+                                    <TableCell className={classes.tableRow} align="right">{row.predictedPaymentDate}</TableCell>
+                                    <TableCell className={classes.tableRow} align="left">{row.predictedAgingBucket}</TableCell>
+                                    <TableCell className={classes.tableRow} align="left">{row.notes}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+        </div>
     )
 }
 

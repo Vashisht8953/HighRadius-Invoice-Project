@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
     mainBackground: {
         top: '0vh',
         left: '0vh',
-        width: window.innerWidth,
+        width: '100vw',
         // width: pxToVh('1603.620px'),
         // width: pxto
-        height: window.innerHeight,
+        height: '100vh',
         // height: pxToVh('759.991px'),
         background: 'transparent radial-gradient(closest-side at 100vh 50vh, #58687E 0vh, #39495E 100vh)',
     }
