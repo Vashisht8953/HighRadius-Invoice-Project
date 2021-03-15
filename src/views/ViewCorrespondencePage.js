@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { AppBar, Toolbar, Button, Select, MenuItem } from '@material-ui/core';
-import { Card, CardContent } from '@material-ui/core';
+import { Select, MenuItem } from '@material-ui/core';
+import { Dialog, IconButton, Typography } from '@material-ui/core';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
 import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { CloseIcon } from '../assets';
 
@@ -9,23 +11,18 @@ const useStyles = makeStyles((theme) => ({
     WindowHeader: {
         background: '#2A3E4C',
         borderRadius: '10px 10px 0px 0px',
-        width: window.innerWidth - 160,
         position: 'static',
     },
     Title: {
-        color: '#FFFFFF',        
+        color: '#FFFFFF',   
+        font: 'Ubuntu',
+        fontWeight: 'normal',
     },
     TopRightMenu: {
-        broder: '2px solid white',
         position: 'fixed',
-        right: '100px',
+        top: '80px',
+        right: '170px',
         display: 'flex'
-    },
-    CloseButton: {
-        paddingLeft: '0px',
-        paddingRight: '0px',
-        width: '25px',
-        height: '25px',
     },
     Dropdown: {
         width: '180px',
@@ -38,20 +35,19 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '3px',
     },
     ViewText: {
-        paddingTop: '18px', 
-        paddingRight: '15px',
+        paddingTop: '16px', 
+        paddingRight: '25px',
+        font: 'Ubuntu',
+        fontWeight: 'normal',
+        fontSize: '17px',
         letterSpacing: '0.33px',
         color: '#C0C6CA',
-    },
-    Window: {
-        width: window.innerWidth - 160,
-        height: window.innerHeight - 320,
-        borderRadius: '0px 0px 10px 10px',
-        background: '#2A3E4C',
     },
     Body: {
         fontSize: '15px',
         color: '#97A1A9',
+        background: '#2A3E4',
+        borderRadius: '0px 0px 10px 10px'
     },
     tableHeading: {
         backgroundColor: '#273D49CC',
@@ -75,48 +71,13 @@ const useStyles = makeStyles((theme) => ({
         height: '10px',
         fontSize: '14px',
     },
-}));
-
-const WindowHeader = () => {
-    const classes = useStyles();
-    const [ template, setTemplate ] = React.useState('');
-    const handleChange = (event) => {
-        setTemplate(event.target.value);
+    dialogPaper: {
+        minHeight: '80vh', 
+        maxHeight: '80vh',
+        minWidth: '80vw',
+        maxWidth: '80vw'
     }
-    return (
-        <AppBar className={classes.WindowHeader}>
-            <Toolbar>
-                <div className={classes.Title}>
-                    View Correspondence (2)
-                </div>
-                <div className={classes.TopRightMenu}>
-                    <div className={classes.ViewText}>
-                        View:
-                    </div>
-                    <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-                        <Select 
-                            className={classes.Dropdown} 
-                            disableUnderline={true}
-                            onChnage={handleChange}
-                            defaultValue={"Template 1"}
-                            // value={template}
-                        >
-                            <MenuItem value="Template 1">
-                                <div>Template 1</div>
-                            </MenuItem>
-                            <MenuItem value="Template 2">
-                                Template 2
-                            </MenuItem>
-                        </Select>
-                    </div>
-                    <div style={{ paddingTop: '17px', paddingBottom: '10px', paddingLeft: '20px' }}>
-                        <Button className={classes.CloseButton}><CloseIcon/></Button>
-                    </div>
-                </div>
-            </Toolbar>
-        </AppBar>
-    );
-}
+}));
 
 function createData(invoiceNumber, PONumber, invoiceDate, dueDate, currency, openAmount) {
     return { invoiceNumber, PONumber, invoiceDate, dueDate, currency, openAmount };
@@ -159,50 +120,139 @@ const InvoiceDetailsTable = () => {
     )
 }
 
-const Window = () => {
+const Template1 = () => {
     const classes = useStyles();
     return (
-        <Card className={classes.Window}>
-            <CardContent className={classes.Body}>
-                Subject: <b>Invoice Details - {"{Account Name}"}</b>
-                <p>
-                    Dear Sir/Madam, Greetings! This is to remind you that there are one or more open invoices on your account. Please provide at your earliest convenience an update on the payment details or clarify the reason for the delay. If you have any specific issue with the invoice(s), please let us know so that we can address it to the correct Department. Please find the details of the invoices below:
-                </p>
-                <p>
-                    Please find the details of the invoices below:
-                </p>
-                <div>
-                    <InvoiceDetailsTable/>
+        <div className={classes.Body}>
+            Subject: <b>Invoice Details - {"{Account Name}"}</b>
+            <p>
+                Dear Sir/Madam, <br/>
+                Greetings! 
+            </p>
+            <p>
+                This is to remind you that there are one or more open invoices on your account. Please provide at your earliest convenience an update on the payment details or clarify the reason for the delay. If you have any specific issue with the invoice(s), please let us know so that we can address it to the correct Department. Please find the details of the invoices below:
+            </p>
+            <p>
+                Please find the details of the invoices below:
+            </p>
+            <div>
+                <InvoiceDetailsTable/>
+            </div>
+            <p>
+                Total Amount to be Paid: <b>$124.00K</b>
+            </p>
+            <p>
+                Incase you have already made the payment for the above items, please send us the details to ensure the payment is posted.<br/>
+                Let us know if we can be of any further assistance. Looking forward to hearing from you.
+            </p>
+            <p>
+                Kind Regards,<br/>
+                <b>[Sender's First Name][Sender's Last Name]</b><br/>
+                Phone: <b>[Sender's contact number]</b><br/>
+                Fax: <b>[If any]</b><br/>
+                Email: <b>[Sender's Email Address]</b><br/>
+                Company Name: <b>[Sender's Company Name]</b>
+            </p>
+        </div>
+    )
+}
+
+const Template2 = () => {
+    const classes = useStyles();
+    return(
+        <div className={classes.Body}>
+            Subject: <b>Invoice Details - {"{Account Name}"}</b>
+            <p>
+                Dear Sir/Madam,
+            </p>
+            <p>
+                Gentle reminder that you have one or more open invoices on your account. <br/>
+                Please get back to us with an expected date of payment. If you have any issue with the invoice(s), please let us know so that we can aderess it at the earliest.
+            </p>
+            <p>
+                Please find the details of the invoices below:
+            </p>
+            <div>
+                <InvoiceDetailsTable/>
+            </div>
+            <p>
+                Incase you have already made the payment for the above items, please send us the details to ensure the payment is posted.<br/>
+                Let us know if we can be of any further assistance. Looking forward to hearing from you.
+            </p>
+            <p>
+                Kind Regards,<br/>
+                <b>[Sender's First Name][Sender's Last Name]</b><br/>
+                Phone: <b>[Sender's contact number]</b><br/>
+                Fax: <b>[If any]</b><br/>
+                Email: <b>[Sender's Email Address]</b><br/>
+                Company Name: <b>[Sender's Company Name]</b>
+            </p>
+        </div>
+    )
+}
+
+const Window = () => {
+    const classes = useStyles();
+    const [ open, setOpen ] = React.useState(true);
+    const [ maxWidth ] = React.useState('lg');
+    const [ fullWidth ] = React.useState(false);
+    const [ template, setTemplate ] = React.useState('Template 1');
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    const handleChange = (event) => {
+        setTemplate(event.target.value);
+    }
+
+    return (
+        <Dialog onClose={handleClose} open={open} maxWidth={maxWidth} fullWidth={fullWidth} classes={{ paper: classes.dialogPaper }} className={classes.Window} >
+            <MuiDialogTitle className={classes.WindowHeader} >
+                <div style={{ display: 'flex', paddingTop: '5px' }}>
+                    <div className={classes.Title} style={{}}>
+                        View Correspondence (2)
+                    </div>
+                    <div className={classes.TopRightMenu} >
+                        <div className={classes.ViewText}>
+                            View:
+                        </div>
+                        <div style={{ paddingTop: '10px', paddingBottom: '10px', paddingRight: '30px' }}>
+                            <Select 
+                                className={classes.Dropdown} 
+                                disableUnderline={true}
+                                onChange={handleChange}
+                                value={template}
+                            >
+                                <MenuItem value="Template 1">
+                                    <div>Template 1</div>
+                                </MenuItem>
+                                <MenuItem value="Template 2">
+                                    Template 2
+                                </MenuItem>
+                            </Select>
+                        </div>
+                        <IconButton onClick={handleClose}>
+                            <CloseIcon/>
+                        </IconButton>
+                    </div>
                 </div>
-                <p>
-                    Total Amount to be Paid: <b>$124.00K</b>
-                </p>
-                <p>
-                    Incase you have already made the payment for the above items, please send us the details to ensure the payment is posted.<br/>
-                    Let us know if we can be of any further assistance. Looking forward to hearing from you.
-                </p>
-                <p>
-                    Kind Regards,<br/>
-                    <b>[Sender's First Name][Sender's Last Name]</b><br/>
-                    Phone: <b>[Sender's contact number]</b><br/>
-                    Fax: <b>[If any]</b><br/>
-                    Email: <b>[Sender's Email Address]</b><br/>
-                    Company Name: <b>[Sender's Company Name]</b>
-                </p>
-            </CardContent>
-        </Card>
-    );
+            </MuiDialogTitle>
+            <MuiDialogContent className={classes.Body} style={{ background: '#2A3E4C' }}>
+                {template == 'Template 1' ? <Template1/> : <Template2/>}
+            </MuiDialogContent>
+        </Dialog>
+    )
 }
 
 const ViewCorrespondencePage = () => {
     return (
-        <div>
-            <div style = {{ paddingLeft: '80px', paddingTop: '80px' }}>
-                <WindowHeader/>
-            </div>
-            <div style = {{ paddingLeft: '80px' }}>
-                <Window/>
-            </div>
+        <div >
+            <Window/>
         </div>
     );
 }
