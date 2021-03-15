@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Select, MenuItem } from '@material-ui/core';
-import { Dialog, IconButton, Typography } from '@material-ui/core';
+import { Dialog, IconButton, Button } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { CloseIcon } from '../assets';
 
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '15px',
         color: '#97A1A9',
         background: '#2A3E4',
-        borderRadius: '0px 0px 10px 10px'
     },
     tableHeading: {
         backgroundColor: '#273D49CC',
@@ -76,7 +76,20 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '80vh',
         minWidth: '80vw',
         maxWidth: '80vw'
-    }
+    },
+    CancelButton: {
+        color: '#14AFF1',
+        textTransform: 'none',
+    },
+    DownloadButton: {
+        color: '#FFF',
+        textTransform: 'none',
+        background: '#14AFF1',
+        borderRadius: '10px',
+        height: '30px',
+        paddingLeft: '15px',
+        paddingRight: '15px'
+    },
 }));
 
 function createData(invoiceNumber, PONumber, invoiceDate, dueDate, currency, openAmount) {
@@ -245,6 +258,14 @@ const Window = () => {
             <MuiDialogContent className={classes.Body} style={{ background: '#2A3E4C' }}>
                 {template == 'Template 1' ? <Template1/> : <Template2/>}
             </MuiDialogContent>
+            <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
+                <div style={{ paddingRight: '20px' }}>
+                    <Button autofocus onClick={handleClose} className={classes.CancelButton}>Cancel</Button>
+                </div>
+                <div style={{ paddingRight: '20px' }}>
+                    <Button autofocus className={classes.DownloadButton}>Download</Button>
+                </div>
+            </MuiDialogActions>
         </Dialog>
     )
 }
