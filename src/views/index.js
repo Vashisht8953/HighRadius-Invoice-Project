@@ -1,3 +1,4 @@
-import LandingPage from './LandingPage';
+import LandingPage from './LandingPage.js';
+import ViewCorrespondencePage from './ViewCorrespondencePage.js';
 
-export { LandingPage };
+export { LandingPage, ViewCorrespondencePage };
