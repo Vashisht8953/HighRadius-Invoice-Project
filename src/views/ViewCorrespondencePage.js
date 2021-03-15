@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     Body: {
         fontSize: '15px',
         color: '#97A1A9',
-        background: '#2A3E4',
+        background: '#2A3E4C',
     },
     tableHeading: {
         backgroundColor: '#273D49CC',
@@ -224,10 +224,10 @@ const Window = () => {
     }
 
     return (
-        <Dialog onClose={handleClose} open={open} maxWidth={maxWidth} fullWidth={fullWidth} classes={{ paper: classes.dialogPaper }} className={classes.Window} >
+        <Dialog onClose={handleClose} open={open} maxWidth={maxWidth} fullWidth={fullWidth} classes={{ paper: classes.dialogPaper }}>
             <MuiDialogTitle className={classes.WindowHeader} >
                 <div style={{ display: 'flex', paddingTop: '5px' }}>
-                    <div className={classes.Title} style={{}}>
+                    <div className={classes.Title}>
                         View Correspondence (2)
                     </div>
                     <div className={classes.TopRightMenu} >
@@ -255,7 +255,7 @@ const Window = () => {
                     </div>
                 </div>
             </MuiDialogTitle>
-            <MuiDialogContent className={classes.Body} style={{ background: '#2A3E4C' }}>
+            <MuiDialogContent className={classes.Body}>
                 {template == 'Template 1' ? <Template1/> : <Template2/>}
             </MuiDialogContent>
             <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
