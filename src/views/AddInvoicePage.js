@@ -1,9 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { InputAdornment, makeStyles } from '@material-ui/core';
 import { Dialog, IconButton, Button, Input } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 import { CloseIcon } from '../assets';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,14 +42,18 @@ const useStyles = makeStyles((theme) => ({
         // border: '2px solid yellow',
         width: '30vw',
         height: '30vh',
+        paddingLeft: '40px'
     },
     Column2: {
         // border: '2px solid red',
         width: '30vw',
         height: '30vh',
+        paddingLeft: '50px'
     },
     InputBox: {
-        color: '#97A1A9',
+        color: '#FFFFFF',
+        fontColor: '',
+        width: '205px',
         // borderBottom: 'none',
         border: '1px solid #356680',
         background: '#283A46',
@@ -87,6 +94,40 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: '15px'
     },
 }))
+
+const DatePicker = () => {
+    const classes = useStyles();
+    const [ selectedDate, setSelectedDate ] = React.useState('');
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    }
+
+    return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+                className={classes.InputBox}
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                // margin="normal"
+                // id="date-picker-inline"
+                invalidDateMessage=''
+                value={selectedDate}
+                onChange={handleDateChange}
+                // emptyLabel=''
+                // KeyboardButtonProps={{
+                //   'aria-label': 'change date',
+                // }}
+                InputProps={{
+                    disableUnderline: true,
+                    selectColor: '#FFFFFF',
+
+                }}
+            />
+        </MuiPickersUtilsProvider>
+    )
+}
 
 const AddMenu = () => {
     const classes = useStyles();
@@ -152,11 +193,19 @@ const AddMenu = () => {
                     </div>
                     <div>
                         <div style={{ paddingBottom: '30px' }}>
-                            <Input
+                            {/* <Input
                                 className={classes.InputBox}
                                 disableUnderline={true}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <DatePicker/>
+                                    </InputAdornment>
+                                }
                             >
-                            </Input>
+                            </Input> */}
+                            <DatePicker 
+                                className={classes.InputBox}
+                            />
                         </div>
                         <div style={{ paddingBottom: '30px' }}>
                             <Input
