@@ -9,7 +9,7 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { CloseIcon } from '../assets';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => console.log(theme) || ({
     dialogPaper: {
         minHeight: '60vh', 
         maxHeight: '60vh',
@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
     },
     InputBox: {
         color: '#FFFFFF',
-        fontColor: '',
         width: '205px',
         // borderBottom: 'none',
         border: '1px solid #356680',
@@ -121,7 +120,7 @@ const DatePicker = () => {
                 // }}
                 InputProps={{
                     disableUnderline: true,
-                    selectColor: '#FFFFFF',
+                    color: 'primary',
 
                 }}
             />
