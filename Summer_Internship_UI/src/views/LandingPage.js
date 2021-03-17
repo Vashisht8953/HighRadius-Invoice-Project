@@ -1,9 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import { ABCLogo, HRCLogo, SearchIcon, EditIcon } from '../assets'
 import { pxToRem } from '../utils/theme';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
-import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Check, LocalDrinkOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -233,38 +236,71 @@ const rows = [
 
 const DataTable = (props) => {
     const classes = useStyles();
+    const [ data, setData ] = React.useState([]);
+    const [ isNext, setNext ] = React.useState(false);
+    let [ pageCount, setPageCount ] = React.useState(1);
+
+    const loadMoreData = () => {
+        setPageCount(pageCount + 1);
+    }
+
+    React.useEffect(() => {
+        if(pageCount !== -1) {
+            setNext(true);
+            axios.get(`http://localhost:8080/1830196/SendData?page=${pageCount}`)
+            .then((response) => {
+                setData((prev) => [...prev, ...response.data]);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
+    }, [pageCount]);
+
     return (
         <div style={{ paddingLeft: '20px' }}>
             <div className={classes.TableBox}>
-                <TableContainer style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60) }}>
-                    <Table className={classes.DataTable} stickyHeader aria-label="customized table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell className={classes.tableHeading}>Customer Name</TableCell>
-                                <TableCell className={classes.tableHeading}>Customer #</TableCell>
-                                <TableCell className={classes.tableHeading}>Invoice #</TableCell>
-                                <TableCell className={classes.tableHeading} align="right">Invoice Amount</TableCell>
-                                <TableCell className={classes.tableHeading} align="right">Due Date</TableCell>
-                                <TableCell className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
-                                <TableCell className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
-                                <TableCell className={classes.tableHeading}>Notes</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody component="th" scope="row">
-                            {rows.map((row) => (
-                                <TableRow className={classes.tableBody}>
-                                    <TableCell className={classes.tableRow} align="left">{row.customerName}</TableCell>
-                                    <TableCell className={classes.tableRow} align="left">{row.customerNumber}</TableCell>
-                                    <TableCell className={classes.tableRow} align="left">{row.invoiceNumber}</TableCell>
-                                    <TableCell className={classes.tableRow} align="right">{row.invoiceAmount}</TableCell>
-                                    <TableCell className={classes.tableRow} align="right">{row.dueDate}</TableCell>
-                                    <TableCell className={classes.tableRow} align="right">{row.predictedPaymentDate}</TableCell>
-                                    <TableCell className={classes.tableRow} align="left">{row.predictedAgingBucket}</TableCell>
-                                    <TableCell className={classes.tableRow} align="left">{row.notes}</TableCell>
+                <TableContainer id="data-table" style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60), overflow: 'scroll', overflowX: 'hidden' }}>
+                    <InfiniteScroll
+                        scrollableTarget="data-table"
+                        dataLength={data.length}
+                        hasMore={isNext}
+                        next={loadMoreData}
+                        loader={
+                            <div style={{ width: '100px', height: '100px', margin: 'auto'}}>
+                                <CircularProgress/>
+                            </div>
+                        }
+                    >
+                        <Table className={classes.DataTable} stickyHeader aria-label="customized table">
+                            <TableHead>
+                                <TableRow>
+                                    {/* <TableCell className={classes.tableHeading}>Customer Name</TableCell>
+                                    <TableCell className={classes.tableHeading}>Customer #</TableCell>
+                                    <TableCell className={classes.tableHeading}>Invoice #</TableCell>
+                                    <TableCell className={classes.tableHeading} align="right">Invoice Amount</TableCell>
+                                    <TableCell className={classes.tableHeading} align="right">Due Date</TableCell>
+                                    <TableCell className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
+                                    <TableCell className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
+                                    <TableCell className={classes.tableHeading}>Notes</TableCell> */}
+                                    {data[0] &&
+                                        Object.keys(data[0]).map((cellName) => (
+                                            <TableCell key={cellName} className={classes.tableHeading}>{cellName}</TableCell>
+                                        ))
+                                    }
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHead>
+                            <TableBody component="th" scope="row">
+                                {data.map((row) => (
+                                    <TableRow className={classes.tableBody}>
+                                        {Object.keys(row).map((cell) => (
+                                            <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </InfiniteScroll>
                 </TableContainer>
             </div>
         </div>
