@@ -6,8 +6,7 @@ import { pxToRem } from '../utils/theme';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@material-ui/core';
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
-// import { Check, LocalDrinkOutlined } from '@material-ui/icons';
-import { AddInvoicePage, DeleteInvoicePage } from './index.js';
+import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage } from './index.js';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -377,6 +376,7 @@ const Bar = (props) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
     const [ openDeleteInvoice, setOpenDeleteInvoice ] = React.useState(false);
+    const [ openEditInvoice, setOpenEditInvoice ] = React.useState(false);
 
     const handleAddInvoice = () => {
         setOpenAddInvoice(true);
@@ -385,6 +385,10 @@ const Bar = (props) => {
 
     const handleDeleteInvoice = () => {
         setOpenDeleteInvoice(true);
+    }
+
+    const handleEditInvoice = () => {
+        setOpenEditInvoice(true);
     }
 
     return (
@@ -404,7 +408,8 @@ const Bar = (props) => {
                         <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.EditButton}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
+                        <Button className={classes.EditButton} onClick={handleEditInvoice}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
+                        <EditInvoicePage open={openEditInvoice} setOpen={setOpenEditInvoice}/>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.DeleteButton} onClick={handleDeleteInvoice}>— Delete</Button>

@@ -24,7 +24,7 @@ const App = () => {
     return (
         <div className={classes.mainBackground}>
             <Router basename={`/${ROLL_NUMBER}`}>
-                <Route exact path="/" component={EditInvoicePage} />
+                <Route exact path="/" component={LandingPage} />
             </Router>
         </div>
     );

@@ -111,9 +111,8 @@ const EditMenu = () => {
     )
 }
 
-const EditInvoicePage = () => {
+const EditInvoicePage = ({ open, setOpen }) => {
     const classes = useStyles();
-    const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
 
@@ -126,7 +125,7 @@ const EditInvoicePage = () => {
             <MuiDialogTitle className={classes.WindowHeader}>
                 <div style={{ display: 'flex' }}>
                     <div className={classes.Title}>
-                        Add Invoice
+                        Edit Invoice
                     </div>
                     <div className={classes.TopRightMenu}>
                         <IconButton onClick={handleClose}>
