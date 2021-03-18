@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         top: '80px',
         right: '170px',
-        display: 'flex'
+        display: 'flex',
     },
     Dropdown: {
         width: '180px',
@@ -204,9 +204,9 @@ const Template2 = () => {
     )
 }
 
-const Window = () => {
+const ViewCorrespondencePage = ({ open, setOpen }) => {
     const classes = useStyles();
-    const [ open, setOpen ] = React.useState(true);
+    // const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
     const [ template, setTemplate ] = React.useState('Template 1');
@@ -268,14 +268,6 @@ const Window = () => {
             </MuiDialogActions>
         </Dialog>
     )
-}
-
-const ViewCorrespondencePage = () => {
-    return (
-        <div >
-            <Window/>
-        </div>
-    );
 }
 
 export default ViewCorrespondencePage;

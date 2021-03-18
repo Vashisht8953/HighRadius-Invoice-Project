@@ -52,6 +52,11 @@ export default createMuiTheme({
       root: {
         borderBottom: 'none'
       }
+    },
+    MuiMenu: {
+      list: {
+        background: '#2A3E4C',
+      }
     }
   },
   

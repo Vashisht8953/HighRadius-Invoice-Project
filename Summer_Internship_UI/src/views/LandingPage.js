@@ -6,7 +6,7 @@ import { pxToRem } from '../utils/theme';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@material-ui/core';
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage } from './index.js';
+import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage, ViewCorrespondencePage } from './index.js';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -219,29 +219,6 @@ const Header = (props) => {
     )
 }
 
-// function createData(customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes) {
-//     return { customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes };
-// }
-
-// const rows = [
-//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-// ];
-
 const DataTable = (props) => {
     const classes = useStyles();
     const [ data, setData ] = React.useState([]);
@@ -338,11 +315,19 @@ const DataTable = (props) => {
                                             // }}
                                         />
                                     </TableCell>
-                                    {data[0] &&
+                                    {/* {data[0] &&
                                         Object.keys(data[0]).map((cellName) => (
                                             <TableCell key={cellName} className={classes.tableHeading}>{cellName}</TableCell>
                                         ))
-                                    }
+                                    } */}
+                                    <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
+                                    <TableCell key={'cust_number'} className={classes.tableHeading}>Customer #</TableCell>
+                                    <TableCell key={'doc_id'} className={classes.tableHeading}>Invoice #</TableCell>
+                                    <TableCell key={'total_open_amount'} className={classes.tableHeading}>Invoice Amount</TableCell>
+                                    <TableCell key={'due_in_date'} className={classes.tableHeading}>Due Date</TableCell>
+                                    <TableCell key={'clear_date'} className={classes.tableHeading}>Predicted Payment Date</TableCell>
+                                    <TableCell key={'predicted_aging_bucket'} className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
+                                    <TableCell key={'notes'} className={classes.tableHeading}>Notes</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody component="th" scope="row">
@@ -377,10 +362,10 @@ const Bar = (props) => {
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
     const [ openDeleteInvoice, setOpenDeleteInvoice ] = React.useState(false);
     const [ openEditInvoice, setOpenEditInvoice ] = React.useState(false);
+    const [ openViewCorrespondence, setOpenViewCorrespondence ] = React.useState(false);
 
     const handleAddInvoice = () => {
         setOpenAddInvoice(true);
-        // console.log(openAddInvoice);
     }
 
     const handleDeleteInvoice = () => {
@@ -391,6 +376,10 @@ const Bar = (props) => {
         setOpenEditInvoice(true);
     }
 
+    const handleViewCorrespondence = () => {
+        setOpenViewCorrespondence(true);
+    }
+
     return (
         <AppBar className={classes.ToolBar}>
             <Toolbar style={{ display: 'flex' }}>
@@ -399,7 +388,8 @@ const Bar = (props) => {
                         <Button className={classes.PredictButton}>Predict</Button>
                     </div>
                     <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
-                        <Button className={classes.ViewCorrespondence}>View Correspondence</Button>
+                        <Button className={classes.ViewCorrespondence} onClick={handleViewCorrespondence}>View Correspondence</Button>
+                        <ViewCorrespondencePage open={openViewCorrespondence} setOpen={setOpenViewCorrespondence}/>
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
