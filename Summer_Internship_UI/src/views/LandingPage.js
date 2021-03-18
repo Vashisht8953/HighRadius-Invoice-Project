@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Circu
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
 // import { Check, LocalDrinkOutlined } from '@material-ui/icons';
-import AddInvoicePage from './AddInvoicePage.js';
+import { AddInvoicePage, DeleteInvoicePage } from './index.js';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -376,10 +376,15 @@ const DataTable = (props) => {
 const Bar = (props) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
+    const [ openDeleteInvoice, setOpenDeleteInvoice ] = React.useState(false);
 
     const handleAddInvoice = () => {
         setOpenAddInvoice(true);
         // console.log(openAddInvoice);
+    }
+
+    const handleDeleteInvoice = () => {
+        setOpenDeleteInvoice(true);
     }
 
     return (
@@ -391,18 +396,19 @@ const Bar = (props) => {
                     </div>
                     <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
                         <Button className={classes.ViewCorrespondence}>View Correspondence</Button>
-                        <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.AddButton} onClick={handleAddInvoice}>+ Add</Button>
+                        <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.EditButton}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.DeleteButton}>— Delete</Button>
+                        <Button className={classes.DeleteButton} onClick={handleDeleteInvoice}>— Delete</Button>
+                        <DeleteInvoicePage open={openDeleteInvoice} setOpen={setOpenDeleteInvoice}/>
                     </div>
                     <div style={{ paddingTop: '10px', }}>
                         <Input

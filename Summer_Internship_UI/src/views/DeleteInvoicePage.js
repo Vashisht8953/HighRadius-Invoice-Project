@@ -54,9 +54,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const DeletePage = () => {
+const DeleteInvoicePage = ({ open, setOpen }) => {
     const classes = useStyles();
-    const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
 
@@ -100,4 +99,4 @@ const DeletePage = () => {
     )
 }
 
-export default DeletePage;
+export default DeleteInvoicePage;
