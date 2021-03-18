@@ -220,15 +220,10 @@ const AddMenu = () => {
     )
 }
 
-const Window = () => {
+const AddInvoicePage = ({ open, setOpen }) => {
     const classes = useStyles();
-    const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    }
 
     const handleClose = () => {
         setOpen(false);
@@ -263,14 +258,6 @@ const Window = () => {
                 </div>
             </MuiDialogActions>
         </Dialog>
-    )
-}
-
-const AddInvoicePage = () => {
-    return (
-        <div>
-            <Window/>
-        </div>
     )
 }
 

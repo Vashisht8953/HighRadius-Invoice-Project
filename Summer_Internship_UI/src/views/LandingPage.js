@@ -6,7 +6,8 @@ import { pxToRem } from '../utils/theme';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@material-ui/core';
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Check, LocalDrinkOutlined } from '@material-ui/icons';
+// import { Check, LocalDrinkOutlined } from '@material-ui/icons';
+import AddInvoicePage from './AddInvoicePage.js';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -193,6 +194,14 @@ const useStyles = makeStyles((theme) => ({
         height: '45px',
         padding: '15px',
     },
+    checkbox: {
+        root: {
+            color: '#14AFF1',
+            '&$checked': {
+                color: '#14AFF1',
+            },
+        },
+    },
 }));
 
 const Header = (props) => {
@@ -211,38 +220,73 @@ const Header = (props) => {
     )
 }
 
-function createData(customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes) {
-    return { customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes };
-}
+// function createData(customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes) {
+//     return { customerName, customerNumber, invoiceNumber, invoiceAmount, dueDate, predictedPaymentDate, predictedAgingBucket, notes };
+// }
 
-const rows = [
-    createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
-    createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
-];
+// const rows = [
+//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Andrea James', 2523532, 73457346735, '122.87K', '23-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Jessica Joe', 3523312, 54723243652, '1.87K', '15-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Teresa Hawkins', 9888757, 76531467365, '22.87K', '03-Jan-2021', '--', '--', 'Lorem Ipsum dolor...'),
+//     createData('Dominic White', 4523426, 57635634655, '55.70K', '22-Mar-2021', '--', '--', 'Lorem Ipsum dolor...'),
+// ];
 
 const DataTable = (props) => {
     const classes = useStyles();
     const [ data, setData ] = React.useState([]);
     const [ isNext, setNext ] = React.useState(false);
     let [ pageCount, setPageCount ] = React.useState(1);
+    const [ selected, setSelected ] = React.useState([]);
 
     const loadMoreData = () => {
         setPageCount(pageCount + 1);
     }
+
+    const handleSelectAllClick = event => {
+        if (event.target.checked) {
+            const newSelecteds = data.map(n => n['doc_id']);
+            setSelected(newSelecteds);
+        }
+        else {
+            setSelected([]);
+        }
+        console.log(selected);
+    };
+
+    const handleClick = (event, doc_id) => {
+        const selectedIndex = selected.indexOf(doc_id);
+        let newSelected = [];
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, doc_id);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selected.slice(0, selectedIndex),
+                selected.slice(selectedIndex + 1)
+          );
+        }
+
+        setSelected(newSelected);
+
+        console.log(selected);
+    };
+
+    const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
 
     React.useEffect(() => {
         if(pageCount !== -1) {
@@ -275,14 +319,26 @@ const DataTable = (props) => {
                         <Table className={classes.DataTable} stickyHeader aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    {/* <TableCell className={classes.tableHeading}>Customer Name</TableCell>
-                                    <TableCell className={classes.tableHeading}>Customer #</TableCell>
-                                    <TableCell className={classes.tableHeading}>Invoice #</TableCell>
-                                    <TableCell className={classes.tableHeading} align="right">Invoice Amount</TableCell>
-                                    <TableCell className={classes.tableHeading} align="right">Due Date</TableCell>
-                                    <TableCell className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
-                                    <TableCell className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
-                                    <TableCell className={classes.tableHeading}>Notes</TableCell> */}
+                                    <TableCell padding="checkbox">
+                                        <Checkbox
+                                            indeterminate={selected.length > 0 && selected.length < data.length}
+                                            checked={data.length > 0 && selected.length === data.length}
+                                            onChange={handleSelectAllClick}
+                                            inputProps={{ 'aria-label': 'select all desserts' }}
+                                            // className={classes.tableHeading}
+                                            className={classes.checkbox}
+                                            disableRipple={true}
+                                            size='small'
+                                            // iconStyle={{ fill: '#14AFF1' }}
+                                            // style={{
+                                            //     root: {
+                                            //         "&$checked": {
+                                            //             color: '#14AFF1',
+                                            //         }
+                                            //     }
+                                            // }}
+                                        />
+                                    </TableCell>
                                     {data[0] &&
                                         Object.keys(data[0]).map((cellName) => (
                                             <TableCell key={cellName} className={classes.tableHeading}>{cellName}</TableCell>
@@ -293,6 +349,16 @@ const DataTable = (props) => {
                             <TableBody component="th" scope="row">
                                 {data.map((row) => (
                                     <TableRow className={classes.tableBody}>
+                                        <TableCell padding="checkbox">
+                                            <Checkbox
+                                                checked={isSelected(row['doc_id'])}
+                                                onClick={(event) => handleClick(event, row['doc_id'])}
+                                                // className={classes.tableRow}
+                                                className={classes.checkbox}
+                                                disableRipple={true}
+                                                size='small'
+                                            />
+                                        </TableCell>
                                         {Object.keys(row).map((cell) => (
                                             <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
                                         ))}
@@ -309,6 +375,13 @@ const DataTable = (props) => {
 
 const Bar = (props) => {
     const classes = useStyles();
+    const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
+
+    const handleAddInvoice = () => {
+        setOpenAddInvoice(true);
+        // console.log(openAddInvoice);
+    }
+
     return (
         <AppBar className={classes.ToolBar}>
             <Toolbar style={{ display: 'flex' }}>
@@ -318,11 +391,12 @@ const Bar = (props) => {
                     </div>
                     <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
                         <Button className={classes.ViewCorrespondence}>View Correspondence</Button>
+                        <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.AddButton}>+ Add</Button>
+                        <Button className={classes.AddButton} onClick={handleAddInvoice}>+ Add</Button>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button className={classes.EditButton}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>

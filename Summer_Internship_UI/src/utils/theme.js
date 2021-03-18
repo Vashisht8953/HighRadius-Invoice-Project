@@ -44,6 +44,14 @@ export default createMuiTheme({
         // background: '#2A3E4C',
         backgroundColor: '#2A3E4C',
       }
+    },
+    MuiTableCell: {
+      stickyHeader: {
+        backgroundColor: '#273D49CC',
+      },
+      root: {
+        borderBottom: 'none'
+      }
     }
   },
   
