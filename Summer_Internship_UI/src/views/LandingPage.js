@@ -131,31 +131,37 @@ const useStyles = makeStyles((theme) => ({
         },
         color: '#FFFFFF',
         fontSize: '16px',
+        "&$selected, &$selected:hover": {
+            backgroundColor: '#2A5368'
+        },
+        borderRadius: 10,
     },
+    hover: {},
+    selected: {},
     tableRow: {
         color: '#FFFFFF',
         borderBottom: 'none',
-        height: '10px'
+        height: '10px',
     },
-    PredictButton: {
-        color: '#FFFFFF',
-        background: '#97A1A9',
-        // font: 'Ubuntu',
-        // fontFamily: 'normal',
-        textTransform: 'none',
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        height: '45px',
-        borderRadius: 10,
-    },
-    ViewCorrespondence: {
-        color: '#97A1A9',
-        background: 'transparent',
-        border: '1px solid #97A1A9',
-        borderRadius: 10,
-        textTransform: 'none',
-        height: '45px',
-    },
+    // PredictButton: {
+    //     color: '#FFFFFF',
+    //     background: '#97A1A9',
+    //     // font: 'Ubuntu',
+    //     // fontFamily: 'normal',
+    //     textTransform: 'none',
+    //     paddingLeft: '10px',
+    //     paddingRight: '10px',
+    //     height: '45px',
+    //     borderRadius: 10,
+    // },
+    // ViewCorrespondence: {
+    //     color: '#97A1A9',
+    //     background: 'transparent',
+    //     border: '1px solid #97A1A9',
+    //     borderRadius: 10,
+    //     textTransform: 'none',
+    //     height: '45px',
+    // },
     searchByInvoiceNumber: {
         color: '#97A1A9',
         borderBottom: 'none',
@@ -169,23 +175,23 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: '1px solid #356680',
         width: '340px',
     },
-    DeleteButton: {
-        color: '#97A1A9',
-        border: '1px solid #97A1A9',
-        borderRadius: 10,
-        textTransform: 'none',
-        height: '45px',
-        padding: '15px'
-    },
-    EditButton: {
-        color: '#97A1A9',
-        border: '1px solid #97A1A9',
-        borderRadius: 10,
-        textTransform: 'none',
-        height: '45px',
-        padding: '15px',
-    },
-    AddButton: {
+    // DeleteButton: {
+    //     color: '#97A1A9',
+    //     border: '1px solid #97A1A9',
+    //     borderRadius: 10,
+    //     textTransform: 'none',
+    //     height: '45px',
+    //     padding: '15px'
+    // },
+    // EditButton: {
+    //     color: '#97A1A9',
+    //     border: '1px solid #97A1A9',
+    //     borderRadius: 10,
+    //     textTransform: 'none',
+    //     height: '45px',
+    //     padding: '15px',
+    // },
+    Button: {
         color: '#FFFFFF',
         border: '1px solid #14AFF1',
         borderRadius: 10,
@@ -331,23 +337,31 @@ const DataTable = (props) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody component="th" scope="row">
-                                {data.map((row) => (
-                                    <TableRow className={classes.tableBody}>
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                checked={isSelected(row['doc_id'])}
-                                                onClick={(event) => handleClick(event, row['doc_id'])}
-                                                // className={classes.tableRow}
-                                                className={classes.checkbox}
-                                                disableRipple={true}
-                                                size='small'
-                                            />
-                                        </TableCell>
-                                        {Object.keys(row).map((cell) => (
-                                            <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                {data.map((row) => {
+                                    const isItemSelected = isSelected(row['doc_id']);
+                                    
+                                    return (
+                                        <TableRow 
+                                            className={classes.tableBody} 
+                                            classes={{ hover: classes.hover, selected: classes.selected }}
+                                            selected={isItemSelected}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    checked={isSelected(row['doc_id'])}
+                                                    onClick={(event) => handleClick(event, row['doc_id'])}
+                                                    className={classes.tableRow}
+                                                    className={classes.checkbox}
+                                                    disableRipple={true}
+                                                    size='small'
+                                                />
+                                            </TableCell>
+                                            {Object.keys(row).map((cell) => (
+                                                <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
+                                            ))}
+                                        </TableRow>
+                                    );
+                                })}
                             </TableBody>
                         </Table>
                     </InfiniteScroll>
@@ -357,7 +371,7 @@ const DataTable = (props) => {
     )
 }
 
-const Bar = (props) => {
+const Bar = ({ rowsSelected }) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
     const [ openDeleteInvoice, setOpenDeleteInvoice ] = React.useState(false);
@@ -385,24 +399,50 @@ const Bar = (props) => {
             <Toolbar style={{ display: 'flex' }}>
                 <div style={{ display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.PredictButton}>Predict</Button>
+                        <Button 
+                            className={classes.Button}
+                            // disabled={}
+                        >
+                            Predict
+                        </Button>
                     </div>
                     <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
-                        <Button className={classes.ViewCorrespondence} onClick={handleViewCorrespondence}>View Correspondence</Button>
+                        <Button 
+                            className={classes.Button} 
+                            onClick={handleViewCorrespondence}
+                        >
+                            View Correspondence
+                        </Button>
                         <ViewCorrespondencePage open={openViewCorrespondence} setOpen={setOpenViewCorrespondence}/>
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.AddButton} onClick={handleAddInvoice}>+ Add</Button>
+                        <Button 
+                            className={classes.Button} 
+                            onClick={handleAddInvoice}
+                        >
+                            + Add
+                        </Button>
                         <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.EditButton} onClick={handleEditInvoice}><EditIcon style={{ paddingRight: '10px' }}/>Edit</Button>
+                        <Button 
+                            className={classes.Button} 
+                            onClick={handleEditInvoice}
+                        >
+                            <EditIcon style={{ paddingRight: '10px' }}/>
+                            Edit
+                        </Button>
                         <EditInvoicePage open={openEditInvoice} setOpen={setOpenEditInvoice}/>
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
-                        <Button className={classes.DeleteButton} onClick={handleDeleteInvoice}>— Delete</Button>
+                        <Button 
+                            className={classes.Button} 
+                            onClick={handleDeleteInvoice}
+                        >
+                            — Delete
+                        </Button>
                         <DeleteInvoicePage open={openDeleteInvoice} setOpen={setOpenDeleteInvoice}/>
                     </div>
                     <div style={{ paddingTop: '10px', }}>
