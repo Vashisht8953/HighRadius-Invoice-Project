@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import theme from '../src/utils/theme';
 import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import store from './store.js';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -13,24 +14,24 @@ import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 //   }
 // }));
 
+// ReactDOM.render(
+//   <MuiThemeProvider theme={theme}>
+//       <App />
+//   </MuiThemeProvider>,
+//   document.getElementById('root')
+// );
+
+// CRACKED BY ILLUMINATI
+// TRUST US AND UNCOMMENT THIS CODE ONCE YOU SETUP YOUR REDUX STORE ;-)
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
+  <Provider store={store}>
+    <MuiThemeProvider theme={theme}>
       <App />
-  </MuiThemeProvider>,
+    </MuiThemeProvider>
+  </Provider>,
   document.getElementById('root')
 );
-/*
-CRACKED BY ILLUMINATI
-TRUST US AND UNCOMMENT THIS CODE ONCE YOU SETUP YOUR REDUX STORE ;-)
- ReactDOM.render(
-   <Provider store={store}>
-     <MuiThemeProvider theme={theme}>
-       <App />
-     </MuiThemeProvider>
-   </Provider>,
-   document.getElementById('root')
- );
-*/
+
 serviceWorker.unregister();
 
 

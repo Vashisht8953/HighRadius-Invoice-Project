@@ -7,6 +7,9 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Circu
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage, ViewCorrespondencePage } from './index.js';
+import store from '../store';
+import { data } from '../reducers';
+import { updateMainData } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
@@ -227,10 +230,12 @@ const Header = (props) => {
 
 const DataTable = (props) => {
     const classes = useStyles();
-    const [ data, setData ] = React.useState([]);
-    const [ isNext, setNext ] = React.useState(false);
-    let [ pageCount, setPageCount ] = React.useState(0);
+    // const [ data, setData ] = React.useState([]);
+    const [ isNext, setNext ] = React.useState(true);
+    const [ pageCount, setPageCount ] = React.useState(0);
     const [ selected, setSelected ] = React.useState([]);
+
+    // const [ dataLength, setDataLength] = React.useState(0);
 
     const loadMoreData = () => {
         setPageCount(pageCount + 1);
@@ -238,7 +243,7 @@ const DataTable = (props) => {
 
     const handleSelectAllClick = event => {
         if (event.target.checked) {
-            const newSelecteds = data.map(n => n['doc_id']);
+            const newSelecteds = store.getState().data.map(n => n['doc_id']);
             setSelected(newSelecteds);
         }
         else {
@@ -275,25 +280,43 @@ const DataTable = (props) => {
             setNext(true);
             axios.get(`http://localhost:8080/1830196/SendData?page=${pageCount}`)
             .then((response) => {
-                setData((prev) => [...prev, ...response.data]);
+                // setData((prev) => [...prev, ...response.data]);
+                // console.log(...response.data);
+                store.dispatch(updateMainData(...response.data));
+                // setDataLength(store.getState().data.length);
+                // console.log(dataLength);
+                // console.log(...store.getState().data);
             })
             .catch((error) => {
                 console.log(error);
             })
         }
+
+        console.log(pageCount);
     }, [pageCount]);
+
+    const dataLength = store.getState().data.length;
+    
 
     return (
         <div style={{ paddingLeft: '20px' }}>
             <div className={classes.TableBox}>
-                <TableContainer id="data-table" style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60), overflow: 'scroll', overflowX: 'hidden' }}>
+                <TableContainer 
+                    id="data-table" 
+                    style={{ 
+                        height: (window.innerHeight - 230), 
+                        width: (window.innerWidth - 60), 
+                        overflow: 'scroll', 
+                        overflowX: 'hidden' 
+                    }}
+                >
                     <InfiniteScroll
                         scrollableTarget="data-table"
-                        dataLength={data.length}
+                        dataLength={dataLength}
                         hasMore={isNext}
                         next={loadMoreData}
                         loader={
-                            <div style={{ width: '100px', height: '100px', margin: 'auto'}}>
+                            <div style={{ width: '100px', height: '100px', margin: 'auto' }}>
                                 <CircularProgress/>
                             </div>
                         }
@@ -303,42 +326,34 @@ const DataTable = (props) => {
                                 <TableRow>
                                     <TableCell padding="checkbox">
                                         <Checkbox
-                                            indeterminate={selected.length > 0 && selected.length < data.length}
-                                            checked={data.length > 0 && selected.length === data.length}
+                                            indeterminate={selected.length > 0 && selected.length < dataLength}
+                                            checked={dataLength > 0 && selected.length === dataLength}
                                             onChange={handleSelectAllClick}
-                                            inputProps={{ 'aria-label': 'select all desserts' }}
-                                            // className={classes.tableHeading}
                                             className={classes.checkbox}
                                             disableRipple={true}
                                             size='small'
-                                            // iconStyle={{ fill: '#14AFF1' }}
-                                            // style={{
-                                            //     root: {
-                                            //         "&$checked": {
-                                            //             color: '#14AFF1',
-                                            //         }
-                                            //     }
-                                            // }}
                                         />
                                     </TableCell>
-                                    {/* {data[0] &&
-                                        Object.keys(data[0]).map((cellName) => (
-                                            <TableCell key={cellName} className={classes.tableHeading}>{cellName}</TableCell>
+                                    {store.getState().data[0] &&
+                                        Object.keys(store.getState().data[0]).map((cellName) => (
+                                            <TableCell key={cellName} className={classes.tableHeading}>{cellName} {store.getState().data.length}</TableCell>
                                         ))
-                                    } */}
-                                    <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
+                                    }
+                                    {/* <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
                                     <TableCell key={'cust_number'} className={classes.tableHeading}>Customer #</TableCell>
                                     <TableCell key={'doc_id'} className={classes.tableHeading}>Invoice #</TableCell>
                                     <TableCell key={'total_open_amount'} className={classes.tableHeading}>Invoice Amount</TableCell>
                                     <TableCell key={'due_in_date'} className={classes.tableHeading}>Due Date</TableCell>
                                     <TableCell key={'clear_date'} className={classes.tableHeading}>Predicted Payment Date</TableCell>
                                     <TableCell key={'predicted_aging_bucket'} className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
-                                    <TableCell key={'notes'} className={classes.tableHeading}>Notes</TableCell>
+                                    <TableCell key={'notes'} className={classes.tableHeading}>Notes</TableCell> */}
                                 </TableRow>
                             </TableHead>
                             <TableBody component="th" scope="row">
-                                {data.map((row) => {
+                                {store.getState().data.map((row) =>  {
                                     const isItemSelected = isSelected(row['doc_id']);
+                                    // console.log(store.getState().data.length);
+                                    // console.log("Hello");
                                     
                                     return (
                                         <TableRow 
@@ -362,6 +377,9 @@ const DataTable = (props) => {
                                         </TableRow>
                                     );
                                 })}
+                                <Button onClick={() => setPageCount(pageCount+1)}>
+                                    Click me!! {dataLength}
+                                </Button>
                             </TableBody>
                         </Table>
                     </InfiniteScroll>
