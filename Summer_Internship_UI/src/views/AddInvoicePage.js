@@ -7,14 +7,29 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import { CloseIcon } from '../assets';
+import { CloseIcon, MandatoryFieldsLogo } from '../assets';
+import { ModeComment } from '@material-ui/icons';
+import { Fragment } from 'react';
+import axios from 'axios';
+// import moment from 'moment';
 
 const useStyles = makeStyles((theme) => console.log(theme) || ({
     dialogPaper: {
         minHeight: '60vh', 
         maxHeight: '60vh',
         minWidth: '60vw',
-        maxWidth: '60vw'
+        maxWidth: '60vw',
+        background: '#000000',
+    },
+    errorbox: {
+        minHeight: '8vh', 
+        maxHeight: '8vh',
+        minWidth: '25vw',
+        maxWidth: '25vw',
+        position: 'absolute',
+        bottom: '10px',
+        left: '10px',
+        background: '#000000',
     },
     WindowHeader: {
         background: '#2A3E4C',
@@ -58,19 +73,17 @@ const useStyles = makeStyles((theme) => console.log(theme) || ({
         background: '#283A46',
         borderRadius: 10,
         paddingLeft: '10px',
-        paddingRight: '10px'
+        paddingRight: '10px',
     },
-    NotesInputBox: {
-        color: '#97A1A9',
-        textAlign: 'top',
-        // textAlign: '',
+    ErrorInputBox: {
+        color: '#FFFFFF',
+        width: '205px',
         // borderBottom: 'none',
-        border: '1px solid #356680',
+        border: '1px solid #FF5B5B',
         background: '#283A46',
         borderRadius: 10,
         paddingLeft: '10px',
         paddingRight: '10px',
-        height: '170px'
     },
     CancelButton: {
         color: '#14AFF1',
@@ -94,30 +107,69 @@ const useStyles = makeStyles((theme) => console.log(theme) || ({
     },
 }))
 
-const DatePicker = () => {
+const MandatoryFieldsPopUp = ({ open, setOpen }) => {
     const classes = useStyles();
-    const [ selectedDate, setSelectedDate ] = React.useState('');
+    const [ maxWidth ] = React.useState('lg');
+    const [ fullWidth ] = React.useState(false);
+    
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    return (
+        <Dialog 
+            onCLose={handleClose} 
+            open={open}
+            maxWidth={maxWidth} 
+            fullWidth={fullWidth} 
+            classes={{ paper: classes.errorbox }}
+        >
+            <MuiDialogContent 
+                className={classes.Body}
+                style={{
+                    overflow: 'hidden',
+                    borderLeft: '5px solid #FF5B5B',
+                    borderRadius: 10,
+                    color: '#FFFFFF',
+                    display: 'flex',
+                }}
+            >
+                <div style={{ paddingRight: '10px' }}>
+                    <MandatoryFieldsLogo/>
+                </div>
+                <div>
+                    Mandatory fields can't be empty
+                </div>
+                <div style={{ position: 'absolute', right: '10px', top: '8px' }}>
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon/>
+                    </IconButton>
+                </div>
+            </MuiDialogContent>
+        </Dialog>
+    );
+}
+
+const DatePicker = ({ dueDate, setDueDate, addButtonClicked, setAddButtonClicked, isErrorDueDate }) => {
+    const classes = useStyles();
+
+    const handleDueDate = (date) => {
+        setAddButtonClicked(false);
+        setDueDate(date);
     }
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-                className={classes.InputBox}
+                className={isErrorDueDate ? classes.ErrorInputBox : classes.InputBox}
                 disableToolbar
                 variant="inline"
-                format="MM/dd/yyyy"
-                // margin="normal"
-                // id="date-picker-inline"
+                error={isErrorDueDate}
+                onChange={handleDueDate}
+                format='dd/MM/yyyy'
                 invalidDateMessage=''
-                value={selectedDate}
-                onChange={handleDateChange}
-                // emptyLabel=''
-                // KeyboardButtonProps={{
-                //   'aria-label': 'change date',
-                // }}
+                value={dueDate}
                 InputProps={{
                     disableUnderline: true,
                     color: 'primary',
@@ -128,8 +180,49 @@ const DatePicker = () => {
     )
 }
 
-const AddMenu = () => {
+const AddMenu = ({ 
+    customerName, setCustomerName,
+    customerNumber, setCustomerNumber,
+    invoiceNumber, setInvoiceNumber,
+    invoiceAmount, setInvoiceAmount,
+    dueDate, setDueDate,
+    notes, setNotes,
+    addButtonClicked, setAddButtonClicked,
+ }) => {
+
     const classes = useStyles();
+
+    const handleCustomerName = (event) => {
+        setAddButtonClicked(false);
+        setCustomerName(event.target.value);
+    }
+
+    const handleCustomerNumber = (event) => {
+        setAddButtonClicked(false);
+        setCustomerNumber(event.target.value);
+    }
+
+    const handleInvoiceNumber = (event) => {
+        setAddButtonClicked(false);
+        setInvoiceNumber(event.target.value);
+    }
+
+    const handleInvoiceAmount = (event) => {
+        setAddButtonClicked(false);
+        setInvoiceAmount(event.target.value);
+    }
+
+    const handleNotes = (event) => {
+        setAddButtonClicked(false);
+        setNotes(event.target.value);
+    }
+
+    const isErrorCustomerName = (customerName === '' && addButtonClicked);
+    const isErrorCustomerNumber = (customerNumber === '' && addButtonClicked);
+    const isErrorInvoiceNumber = (invoiceNumber === '' && addButtonClicked);
+    const isErrorInvoiceAmount = (invoiceAmount === '' && addButtonClicked);
+    const isErrorDueDate = (dueDate === '' && addButtonClicked);
+
     return (
         <div style={{ display: 'flex' }}>
             <div className={classes.Column1}>
@@ -151,29 +244,46 @@ const AddMenu = () => {
                     <div>
                         <div style={{ paddingBottom: '30px' }}>
                             <Input
-                                className={classes.InputBox}
+                                className={isErrorCustomerName ? classes.ErrorInputBox : classes.InputBox}
                                 disableUnderline={true}
+                                required={true}
+                                value={customerName}
+                                onChange={(event) => handleCustomerName(event)}
+                                error={isErrorCustomerName}
+                                // errorStyle={{border: '1px solid white'}}
                             >
                             </Input>
                         </div>
                         <div style={{ paddingBottom: '30px' }}>
                             <Input
-                                className={classes.InputBox}
+                                className={isErrorCustomerNumber ? classes.ErrorInputBox : classes.InputBox}
                                 disableUnderline={true}
+                                required={true}
+                                value={customerNumber}
+                                onChange={(event) => handleCustomerNumber(event)}
+                                error={isErrorCustomerNumber}
                             >
                             </Input>
                         </div>
                         <div style={{ paddingBottom: '30px' }}>
                             <Input
-                                className={classes.InputBox}
+                                className={isErrorInvoiceNumber ? classes.ErrorInputBox : classes.InputBox}
                                 disableUnderline={true}
+                                required={true}
+                                value={invoiceNumber}
+                                onChange={(event) => handleInvoiceNumber(event)}
+                                error={isErrorInvoiceNumber}
                             >
                             </Input>
                         </div>
                         <div>
                             <Input
-                                className={classes.InputBox}
+                                className={isErrorInvoiceAmount ? classes.ErrorInputBox : classes.InputBox}
                                 disableUnderline={true}
+                                required={true}
+                                value={invoiceAmount}
+                                onChange={(event) => handleInvoiceAmount(event)}
+                                error={isErrorInvoiceAmount}
                             >
                             </Input>
                         </div>
@@ -192,24 +302,22 @@ const AddMenu = () => {
                     </div>
                     <div>
                         <div style={{ paddingBottom: '30px' }}>
-                            {/* <Input
-                                className={classes.InputBox}
-                                disableUnderline={true}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <DatePicker/>
-                                    </InputAdornment>
-                                }
-                            >
-                            </Input> */}
                             <DatePicker 
-                                className={classes.InputBox}
+                                dueDate={dueDate}
+                                setDueDate={setDueDate}
+                                addButtonClicked={addButtonClicked}
+                                setAddButtonClicked={setAddButtonClicked}
+                                isErrorDueDate={isErrorDueDate}
+                                // formatDate={(date) => moment(date).format('DD/MM/YYYY')}
                             />
                         </div>
                         <div style={{ paddingBottom: '30px' }}>
                             <Input
-                                className={classes.NotesInputBox}
+                                className={classes.InputBox}
+                                style={{ height: '170px', width: '230px' }}
                                 disableUnderline={true}
+                                value={notes}
+                                onChange={(event) => handleNotes(event)}
                             >
                             </Input>
                         </div>
@@ -225,39 +333,112 @@ const AddInvoicePage = ({ open, setOpen }) => {
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
 
+    const [ customerName, setCustomerName ] = React.useState('');
+    const [ customerNumber, setCustomerNumber ] = React.useState('');
+    const [ invoiceNumber, setInvoiceNumber ] = React.useState('');
+    const [ invoiceAmount, setInvoiceAmount ] = React.useState('');
+    const [ dueDate, setDueDate ] = React.useState('');
+    const [ notes, setNotes ] = React.useState('');
+
+    const [ addButtonClicked, setAddButtonClicked ] = React.useState(false);
+    const [ openMandatoryFieldsPopUp, setOpenMandatoryFieldsPopUp ] = React.useState(false);
+
+    const handleAddButton = () => {
+        setAddButtonClicked(true);
+        if(
+            customerName !== '' && 
+            customerNumber !== '' &&
+            invoiceNumber !== '' &&
+            invoiceAmount !== '' &&
+            dueDate !== ''
+        ) {
+            axios.post(
+                'http://localhost:8080/1830196/AddInvoice', 
+                {
+                    customerName, 
+                    customerNumber, 
+                    invoiceNumber, 
+                    invoiceAmount, 
+                    dueDate, 
+                    notes
+                }
+            )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+            handleClose();
+        }
+        else {
+            setOpenMandatoryFieldsPopUp(true);
+        }
+    }
+
+    const handleClearButton = () => {
+        setAddButtonClicked(false);
+        setCustomerName('');
+        setCustomerNumber('');
+        setInvoiceNumber('');
+        setInvoiceAmount('');
+        setDueDate('');
+        setNotes('');
+    }
+
     const handleClose = () => {
+        handleClearButton();
         setOpen(false);
     }
 
     return (
-        <Dialog onCLose={handleClose} open={open} maxWidth={maxWidth} fullWidth={fullWidth} classes={{ paper: classes.dialogPaper }}>
-            <MuiDialogTitle className={classes.WindowHeader} >
-                <div style={{ display: 'flex' }}>
-                    <div className={classes.Title}>
-                        Add Invoice
-                    </div>
-                    <div className={classes.TopRightMenu}>
-                        <IconButton onClick={handleClose}>
-                            <CloseIcon/>
-                        </IconButton>
-                    </div>
-                </div>
-            </MuiDialogTitle>
-            <MuiDialogContent className={classes.Body}>
-                <AddMenu/>
-            </MuiDialogContent>
-            <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
-                <div onClick={handleClose} style={{ position: 'fixed', left: '350px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.CancelButton}>Cancel</Button>
-                </div>
-                <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.ClearButton}>Clear</Button>
-                </div>
-                <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.AddButton}>Add</Button>
-                </div>
-            </MuiDialogActions>
-        </Dialog>
+        <Fragment>
+            <Fragment>
+                <Dialog onCLose={handleClose} open={open} maxWidth={maxWidth} fullWidth={fullWidth} classes={{ paper: classes.dialogPaper }}>
+                    <MuiDialogTitle className={classes.WindowHeader} >
+                        <div style={{ display: 'flex' }}>
+                            <div className={classes.Title}>
+                                Add Invoice
+                            </div>
+                            <div className={classes.TopRightMenu}>
+                                <IconButton onClick={handleClose}>
+                                    <CloseIcon/>
+                                </IconButton>
+                            </div>
+                        </div>
+                    </MuiDialogTitle>
+                    <MuiDialogContent className={classes.Body}>
+                        <AddMenu
+                            customerName={customerName} setCustomerName={setCustomerName}
+                            customerNumber={customerNumber} setCustomerNumber={setCustomerNumber}
+                            invoiceNumber={invoiceNumber} setInvoiceNumber={setInvoiceNumber}
+                            invoiceAmount={invoiceAmount} setInvoiceAmount={setInvoiceAmount}
+                            dueDate={dueDate} setDueDate={setDueDate}
+                            notes={notes} setNotes={setNotes}
+                            addButtonClicked={addButtonClicked} setAddButtonClicked={setAddButtonClicked}
+                        />
+                    </MuiDialogContent>
+                    <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
+                        <div onClick={handleClose} style={{ position: 'fixed', left: '350px', paddingBottom: '10px' }}>
+                            <Button autofocus className={classes.CancelButton}>Cancel</Button>
+                        </div>
+                        <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
+                            <Button autofocus className={classes.ClearButton} onClick={handleClearButton}>Clear</Button>
+                        </div>
+                        <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
+                            <Button autofocus className={classes.AddButton} onClick={handleAddButton}>Add</Button>
+                        </div>
+                    </MuiDialogActions>
+                </Dialog>
+            </Fragment>
+            <Fragment>
+                <MandatoryFieldsPopUp
+                    open={openMandatoryFieldsPopUp}
+                    setOpen={setOpenMandatoryFieldsPopUp}
+                />
+            </Fragment>
+        </Fragment>
     )
 }
 

@@ -229,7 +229,7 @@ const DataTable = (props) => {
     const classes = useStyles();
     const [ data, setData ] = React.useState([]);
     const [ isNext, setNext ] = React.useState(false);
-    let [ pageCount, setPageCount ] = React.useState(1);
+    let [ pageCount, setPageCount ] = React.useState(0);
     const [ selected, setSelected ] = React.useState([]);
 
     const loadMoreData = () => {

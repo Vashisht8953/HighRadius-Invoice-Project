@@ -52,7 +52,7 @@ public class SendData extends HttpServlet {
 			
 			Statement st = conn.createStatement();
 //			String sql_statement = "SELECT * FROM invoice_details ORDER BY doc_id LIMIT " + page + ", 10";
-			String sql_statement = "SELECT cust_number, name_customer, doc_id, total_open_amount, due_in_date from invoice_details ORDER BY doc_id LIMIT " + page + ", " + NO_OF_ROWS_TO_GET;
+			String sql_statement = "SELECT cust_number, name_customer, doc_id, total_open_amount, due_in_date from invoice_details ORDER BY doc_id ASC LIMIT " + page + ", " + NO_OF_ROWS_TO_GET;
 			ResultSet rs = st.executeQuery(sql_statement);
 			
 			ArrayList<InvoiceDetails> data = new ArrayList<>();
@@ -84,7 +84,7 @@ public class SendData extends HttpServlet {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			String invoices = gson.toJson(data);
 			
-			System.out.println(invoices);
+//			System.out.println(invoices);
 			out.print(invoices);
 			response.setStatus(200);
 			out.flush();
