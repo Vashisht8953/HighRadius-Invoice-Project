@@ -57,7 +57,7 @@ export default createMuiTheme({
       list: {
         background: '#2A3E4C',
       }
-    }
+    },
   },
   
 });

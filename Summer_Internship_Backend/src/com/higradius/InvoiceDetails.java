@@ -18,6 +18,7 @@ public class InvoiceDetails {
 //	private String cust_payment_terms;
 //	private Long invoice_id;
 //	private int isOpen;
+	private String notes;
 //	
 //	public String getBusinessCode() {
 //		return business_code;
@@ -137,6 +138,13 @@ public class InvoiceDetails {
 //	public void setIsOpen(int isOpen) {
 //		this.isOpen = isOpen;
 //	}
+	
+	public String getNotes() {
+		return notes;
+	}
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 	
 //	public String toString() {
 //		String res = business_code + ", " + cust_number + ", " + name_customer + ", " + clear_date + ", " + business_year + ", " + doc_id + ", " + posting_date + ", " + document_create_date + ", " + due_in_date + ", " + invoice_currency + ", " + document_type + ", " + posting_id + ", " + total_open_amount + ", " + baseline_create_date + ", " + cust_payment_terms + ", " + invoice_id + ", " + isOpen + "\n";
