@@ -6,20 +6,17 @@ import { pxToRem } from '../utils/theme';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@material-ui/core';
 import { AppBar, Toolbar, Button, Input, InputAdornment, Checkbox } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage, ViewCorrespondencePage } from './index.js';
+import { AddInvoicePage, DeleteInvoicePage, EditInvoicePage, ViewCorrespondencePage } from '../views';
 
 const useStyles = makeStyles((theme) => ({
     LandingPage: {
         display: 'flex',
         flexDirection: 'column',
-        // border: '1px solid black',
     },
     Header: {
         display: 'flex',
         paddingBlock: '5px',
         width: 1553.620,
-        // paddinLeft: '20px'
-        // border: '2px solid black',
     },
     ABCContainer: {
         display: 'flex',
@@ -32,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: '5px',
         opacity: 1,
         fill: '#CD7925',
-        // background: '#CD7925',
-        // paddingTop: pxToRem('10px'),
-        // background: '#CD7925 0% 0% no-repeat padding-box',
     },
     ABCText: {
         font: 'Futura PT',
@@ -43,26 +37,22 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         paddingLeft: '10px',
         verticalAlign: 'center',
-        // display: 'flex',
     },
     HRCLogo: {
         position: 'absolute',
         top: '0%',
-        // width: '100%',
         textAlign: 'center',
         paddingBlock: '10px',
-        // border: '2px solid black',
         width: window.innerWidth - 40,
     },
     InvoiceList: {
         font: 'Ubuntu',
         fontSize: '20px',
         color: '#FFFFFF',
-        // paddingInline: '10px',
         paddingTop: '10px',
         paddingBottom: '20px',
         paddingLeft: '20px',
-        width: '120px',
+        width: '200px',
         // top: '100px',
         // left: '30px',
         // width: '141px',
@@ -235,14 +225,27 @@ const Header = (props) => {
 
 const DataTable = ({
     data, setData,
-    selected, setSelected
+    selected, setSelected,
+    searchKeyword, searchResults,
+    searchPageCount, setSearchPageCount
 }) => {
     const classes = useStyles();
     const [ isNext, setNext ] = React.useState(false);
-    const [ pageCount, setPageCount ] = React.useState(0);
+    const [ dataPageCount, setDataPageCount ] = React.useState(0);
 
     const loadMoreData = () => {
-        setPageCount(pageCount + 1);
+        if(viewSearchResults) {
+            setSearchPageCount(searchPageCount + 1);
+            if(dataPageCount !== 0) {
+                setDataPageCount(0);
+            }
+        }
+        else {
+            setDataPageCount(dataPageCount + 1);
+            if(searchPageCount !== 0) {
+                setSearchPageCount(0);
+            }
+        }
     }
 
     const handleSelectAllClick = event => {
@@ -278,14 +281,10 @@ const DataTable = ({
         // console.log("NewSelected", newSelected);
     };
 
-    const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
-    const dataLength = data === undefined ? 0 : data.length;
-    const selectedLength = selected === undefined ? 0 : selected.length;
-
     React.useEffect(() => {
-        if(pageCount !== -1) {
+        if(dataPageCount !== -1) {
             setNext(true);
-            axios.get(`http://localhost:8080/1830196/SendData?page=${pageCount}`)
+            axios.get(`http://localhost:8080/1830196/SendData?page=${dataPageCount}`)
             .then((response) => {
                 setData((prev) => [...prev, ...response.data]);
             })
@@ -294,7 +293,13 @@ const DataTable = ({
             })
         }
         // console.log(data);
-    }, [pageCount]);
+    }, [dataPageCount]);
+
+    const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
+    const dataLength = data === undefined ? 0 : data.length;
+    const selectedLength = selected === undefined ? 0 : selected.length;
+    const searchResultsLength = searchResults === undefined ? 0 : searchResults.length;
+    const viewSearchResults = searchKeyword !== '';
 
     return (
         <div style={{ paddingLeft: '20px' }}>
@@ -302,7 +307,7 @@ const DataTable = ({
                 <TableContainer id="data-table" style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60), overflow: 'scroll', overflowX: 'hidden' }}>
                     <InfiniteScroll
                         scrollableTarget="data-table"
-                        dataLength={dataLength}
+                        dataLength={viewSearchResults ? searchResultsLength : dataLength}
                         hasMore={isNext}
                         next={loadMoreData}
                         loader={
@@ -341,8 +346,8 @@ const DataTable = ({
                                     } */}
                                     <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
                                     <TableCell key={'cust_number'} className={classes.tableHeading}>Customer #</TableCell>
-                                    <TableCell key={'doc_id'} className={classes.tableHeading}>Invoice #</TableCell>
-                                    <TableCell key={'total_open_amount'} className={classes.tableHeading}>Invoice Amount</TableCell>
+                                    <TableCell key={'doc_id'} className={classes.tableHeading}>Sales Order #</TableCell>
+                                    <TableCell key={'total_open_amount'} className={classes.tableHeading}>Sales Order Amount</TableCell>
                                     <TableCell key={'due_in_date'} className={classes.tableHeading}>Due Date</TableCell>
                                     <TableCell key={'clear_date'} className={classes.tableHeading}>Predicted Payment Date</TableCell>
                                     <TableCell key={'predicted_aging_bucket'} className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
@@ -350,7 +355,7 @@ const DataTable = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody component="th" scope="row">
-                                {data.map((row) => {
+                                {(searchKeyword === '' ? data : searchResults).map((row) => {
                                     const isItemSelected = isSelected(row['doc_id']);
                                     
                                     return (
@@ -386,7 +391,10 @@ const DataTable = ({
 
 const Bar = ({ 
     data, setData,
-    selected, setSelected
+    selected, setSelected,
+    searchKeyword, setSearchKeyword,
+    searchResults, setSearchResults,
+    searchPageCount, setSearchPageCount
  }) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
@@ -412,6 +420,23 @@ const Bar = ({
     const handleViewCorrespondence = () => {
         setOpenViewCorrespondence(true);
     }
+
+    const handleSearch = (event) => {
+        setSearchKeyword(event.target.value);
+        setSearchPageCount(0);
+        setSearchResults([]);
+    }
+
+    React.useEffect(() => {
+        axios.get(`http://localhost:8080/1830196/SearchSalesOrder?searchKeyword=${searchKeyword}&page=${searchPageCount}`)
+        .then((response) => {
+            setSearchResults([...searchResults, ...response.data]);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        console.log(searchKeyword)
+    }, [ searchKeyword, searchPageCount ])
 
     React.useEffect(() => {
         setSelectedInvoiceDetails(data.filter(row => selected.indexOf(row['doc_id']) != -1));
@@ -493,6 +518,8 @@ const Bar = ({
                             className={classes.searchByInvoiceNumber}
                             placeholder='Search by Invoice Number'
                             disableUnderline={true}
+                            value={searchKeyword}
+                            onChange={(event) => handleSearch(event)}
                             endAdornment={
                                 <InputAdornment position='end'>
                                     <SearchIcon/>
@@ -511,6 +538,9 @@ const LandingPage = () => {
     const [ data, setData ] = React.useState([]);
     const [ selected, setSelected ] = React.useState([]);
 
+    const [ searchKeyword, setSearchKeyword ] = React.useState('');
+    const [ searchResults, setSearchResults ] = React.useState([]);
+    const [ searchPageCount, setSearchPageCount ] = React.useState(0);
 
     return (
         <div className={classes.LandingPage}>
@@ -518,19 +548,24 @@ const LandingPage = () => {
                 <Header/>
             </div>
             <div className={classes.InvoiceList}>
-                Invoice List
+                Sales Order List
             </div>
             <div className={classes.InvoiceTable}>
                 <div style={{ paddingLeft: '19px' }}>
                     <Bar
                         data={data} setData={setData}
                         selected={selected} setSelected={setSelected}
+                        searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword}
+                        searchResults={searchResults} setSearchResults={setSearchResults}
+                        searchPageCount={searchPageCount} setSearchPageCount={setSearchPageCount}
                     />
                 </div>
                 <div>
                     <DataTable
                         data={data} setData={setData}
                         selected={selected} setSelected={setSelected}
+                        searchKeyword={searchKeyword} searchResults={searchResults}
+                        searchPageCount={searchPageCount} setSearchPageCount={setSearchPageCount}
                     />
                 </div>
             </div>

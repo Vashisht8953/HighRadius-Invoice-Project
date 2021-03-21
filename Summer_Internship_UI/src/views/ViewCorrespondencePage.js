@@ -75,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '80vh', 
         maxHeight: '80vh',
         minWidth: '80vw',
-        maxWidth: '80vw'
+        maxWidth: '80vw',
+        background: '#000000',
     },
     CancelButton: {
         color: '#14AFF1',
