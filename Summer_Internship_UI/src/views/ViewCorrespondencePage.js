@@ -101,7 +101,7 @@ const rows = [
     createData('54723243652', '54723243652', '15-Jan-2021', '15-Jan-2021', 'USD', '1.45K'),
 ]
 
-const InvoiceDetailsTable = () => {
+const InvoiceDetailsTable = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
     return (
         <TableContainer>
@@ -117,14 +117,17 @@ const InvoiceDetailsTable = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody component="th" scope="row">
-                    {rows.map((row) => (
+                    {(selectedInvoiceDetails === undefined ? [] : selectedInvoiceDetails).map((row) => (
                         <TableRow className={classes.tableBody}>
-                            <TableCell className={classes.tableRow}>{row.invoiceNumber}</TableCell>
+                            {/* <TableCell className={classes.tableRow}>{row.invoiceNumber}</TableCell>
                             <TableCell className={classes.tableRow}>{row.PONumber}</TableCell>
                             <TableCell className={classes.tableRow}>{row.invoiceDate}</TableCell>
                             <TableCell className={classes.tableRow}>{row.dueDate}</TableCell>
                             <TableCell className={classes.tableRow}>{row.currency}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.openAmount}</TableCell>
+                            <TableCell className={classes.tableRow}>{row.openAmount}</TableCell> */}
+                            {Object.keys(row).map((cell) => (
+                                <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
+                            ))}
                         </TableRow>
                     ))}
                 </TableBody>
@@ -133,7 +136,7 @@ const InvoiceDetailsTable = () => {
     )
 }
 
-const Template1 = () => {
+const Template1 = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
     return (
         <div className={classes.Body}>
@@ -149,7 +152,7 @@ const Template1 = () => {
                 Please find the details of the invoices below:
             </p>
             <div>
-                <InvoiceDetailsTable/>
+                <InvoiceDetailsTable selectedInvoiceDetails={selectedInvoiceDetails}/>
             </div>
             <p>
                 Total Amount to be Paid: <b>$124.00K</b>
@@ -170,7 +173,7 @@ const Template1 = () => {
     )
 }
 
-const Template2 = () => {
+const Template2 = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
     return(
         <div className={classes.Body}>
@@ -186,7 +189,7 @@ const Template2 = () => {
                 Please find the details of the invoices below:
             </p>
             <div>
-                <InvoiceDetailsTable/>
+                <InvoiceDetailsTable selectedInvoiceDetails={selectedInvoiceDetails}/>
             </div>
             <p>
                 Incase you have already made the payment for the above items, please send us the details to ensure the payment is posted.<br/>
@@ -204,7 +207,7 @@ const Template2 = () => {
     )
 }
 
-const ViewCorrespondencePage = ({ open, setOpen }) => {
+const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
     const classes = useStyles();
     // const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
@@ -256,7 +259,10 @@ const ViewCorrespondencePage = ({ open, setOpen }) => {
                 </div>
             </MuiDialogTitle>
             <MuiDialogContent className={classes.Body}>
-                {template == 'Template 1' ? <Template1/> : <Template2/>}
+                {template == 'Template 1' ? 
+                    <Template1 selectedInvoiceDetails={selectedInvoiceDetails}/> : 
+                    <Template2 selectedInvoiceDetails={selectedInvoiceDetails}/>
+                }
             </MuiDialogContent>
             <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
                 <div style={{ paddingRight: '20px' }}>

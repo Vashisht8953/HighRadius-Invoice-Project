@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { InputAdornment, makeStyles } from '@material-ui/core';
 import { Dialog, IconButton, Button, Input } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -44,18 +45,15 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: '10px',
         paddingRight: '10px'
     },
-    NotesInputBox: {
-        color: '#97A1A9',
-        textAlign: 'top',
+    ErrorInputBox: {
+        color: '#FFFFFF',
         width: '240px',
-        // textAlign: '',
         // borderBottom: 'none',
-        border: '1px solid #356680',
+        border: '1px solid #FF5B5B',
         background: '#283A46',
         borderRadius: 10,
         paddingLeft: '10px',
-        paddingRight: '10px',
-        height: '150px'
+        paddingRight: '10px'
     },
     CancelButton: {
         color: '#14AFF1',
@@ -79,8 +77,27 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const EditMenu = () => {
+const EditMenu = ({
+    invoiceAmount, notes,
+    newInvoiceAmount, setNewInvoiceAmount,
+    newNotes, setNewNotes,
+    saveButtonClicked, setSaveButtonClicked,
+    isErrorNewInvoiceAmount
+}) => {
     const classes = useStyles();
+
+    const handleInvoiceAmount = (event) => {
+        setSaveButtonClicked(false);
+        setNewInvoiceAmount(event.target.value);
+    }
+
+    const handleNotes = (event) => {
+        setSaveButtonClicked(false);
+        setNewNotes(event.target.value);
+    }
+
+    
+
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ paddingLeft: '20px', paddingRight: '30px', paddingTop: '5px', fontSize: '17px' }}>
@@ -94,15 +111,22 @@ const EditMenu = () => {
             <div>
                 <div style={{ paddingBottom: '30px' }}>
                     <Input
-                        className={classes.InputBox}
+                        className={isErrorNewInvoiceAmount ? classes.ErrorInputBox : classes.InputBox}
                         disableUnderline={true}
+                        value={newInvoiceAmount}
+                        placeholder={invoiceAmount}
+                        onChange={(event) => handleInvoiceAmount(event)}
                     >
                     </Input>
                 </div>
                 <div style={{ paddingBottom: '30px' }}>
                     <Input
-                        className={classes.NotesInputBox}
+                        className={classes.InputBox}
+                        style={{ height: '150px' }}
                         disableUnderline={true}
+                        value={newNotes}
+                        placeholder={notes}
+                        onChange={(event) => handleNotes(event)}
                     >
                     </Input>
                 </div>
@@ -111,12 +135,53 @@ const EditMenu = () => {
     )
 }
 
-const EditInvoicePage = ({ open, setOpen }) => {
+const EditInvoicePage = ({ 
+    open, setOpen,
+    selectedInvoiceDetails,
+    // invoiceNumber,
+    // invoiceAmount,
+    // notes,
+}) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
 
+    const invoiceNumber = selectedInvoiceDetails.length === 0 ? '' : selectedInvoiceDetails[0]['doc_id']
+    const invoiceAmount = selectedInvoiceDetails.length === 0 ? '' : selectedInvoiceDetails[0]['total_open_amount']
+    const notes = selectedInvoiceDetails.length === 0 ? '' : selectedInvoiceDetails[0]['notes'];
+
+    const [ newInvoiceAmount, setNewInvoiceAmount ] = React.useState(invoiceAmount);
+    const [ newNotes, setNewNotes ] = React.useState(notes);
+    const [ saveButtonClicked, setSaveButtonClicked ] = React.useState(false);
+
+    const isErrorNewInvoiceAmount = (newInvoiceAmount === '' && saveButtonClicked);
+
+    const handleSave = () => {
+        if(newInvoiceAmount !== '') {
+            axios.post('http://localhost:8080/1830196/EditSalesOrder', 
+            {
+                invoiceNumber, 
+                newInvoiceAmount,
+                newNotes
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
+        setSaveButtonClicked(true);
+        // console.log(invoiceAmount, notes);
+    }
+
+    const handleReset = () => {
+        setNewInvoiceAmount(invoiceAmount);
+        setNewNotes(notes);
+    }
+
     const handleClose = () => {
+        // console.log(invoiceAmount);
         setOpen(false);
     }
 
@@ -135,17 +200,35 @@ const EditInvoicePage = ({ open, setOpen }) => {
                 </div>
             </MuiDialogTitle>
             <MuiDialogContent className={classes.Body}>
-                <EditMenu/>
+                <EditMenu
+                    invoiceAmount={invoiceAmount} notes={notes}
+                    newInvoiceAmount={newInvoiceAmount} setNewInvoiceAmount={setNewInvoiceAmount}
+                    newNotes={newNotes} setNewNotes={setNewNotes}
+                    saveButtonClicked={saveButtonClicked} setSaveButtonClicked={setSaveButtonClicked}
+                    isErrorNewInvoiceAmount={isErrorNewInvoiceAmount}
+                />
             </MuiDialogContent>
             <MuiDialogActions style={{ background: '#2A3E4C', borderRadius: '0px 0px 10px 10px' }}>
-                <div onClick={handleClose} style={{ position: 'fixed', left: '585px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.CancelButton}>Cancel</Button>
+                <div style={{ position: 'fixed', left: '585px', paddingBottom: '10px' }}>
+                    <Button 
+                        autofocus 
+                        className={classes.CancelButton} 
+                        onClick={handleClose}
+                    >
+                        Cancel
+                    </Button>
                 </div>
                 <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.ResetButton}>Reset</Button>
+                    <Button 
+                        autofocus 
+                        className={classes.ResetButton}
+                        onClick={handleReset}>Reset</Button>
                 </div>
                 <div style={{ paddingRight: '20px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.SaveButton}>Save</Button>
+                    <Button 
+                        autofocus 
+                        className={classes.SaveButton}
+                        onClick={handleSave}>Save</Button>
                 </div>
             </MuiDialogActions>
         </Dialog>

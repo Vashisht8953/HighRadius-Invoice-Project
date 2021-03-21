@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { InputAdornment, makeStyles } from '@material-ui/core';
 import { Dialog, IconButton, Button, Input } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -54,13 +55,25 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const DeleteInvoicePage = ({ open, setOpen }) => {
+const DeleteInvoicePage = ({ open, setOpen, selected }) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
 
     const handleClose = () => {
         setOpen(false);
+    }
+
+    const handleDelete = () => {
+        axios.post('http://localhost:8080/1830196/DeleteSalesOrder', {selected})
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        console.log(selected);
     }
 
     return (
@@ -92,7 +105,7 @@ const DeleteInvoicePage = ({ open, setOpen }) => {
                     <Button autofocus onClick={handleClose} className={classes.CancelButton}>Cancel</Button>
                 </div>
                 <div style={{ paddingRight: '10px', paddingBottom: '10px' }}>
-                    <Button autofocus className={classes.DeleteButton}>Delete</Button>
+                    <Button autofocus onClick={handleDelete} className={classes.DeleteButton}>Delete</Button>
                 </div>
             </MuiDialogActions>
         </Dialog>

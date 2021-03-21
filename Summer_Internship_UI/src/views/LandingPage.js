@@ -199,6 +199,14 @@ const useStyles = makeStyles((theme) => ({
         height: '45px',
         padding: '15px',
     },
+    DisabledButton: {
+        color: '#97A1A9',
+        border: '1px solid #97A1A9',
+        borderRadius: 10,
+        textTransform: 'none',
+        height: '45px',
+        padding: '15px',
+    },
     checkbox: {
         root: {
             color: '#14AFF1',
@@ -225,12 +233,13 @@ const Header = (props) => {
     )
 }
 
-const DataTable = (props) => {
+const DataTable = ({
+    data, setData,
+    selected, setSelected
+}) => {
     const classes = useStyles();
-    const [ data, setData ] = React.useState([]);
     const [ isNext, setNext ] = React.useState(false);
-    let [ pageCount, setPageCount ] = React.useState(0);
-    const [ selected, setSelected ] = React.useState([]);
+    const [ pageCount, setPageCount ] = React.useState(0);
 
     const loadMoreData = () => {
         setPageCount(pageCount + 1);
@@ -240,11 +249,12 @@ const DataTable = (props) => {
         if (event.target.checked) {
             const newSelecteds = data.map(n => n['doc_id']);
             setSelected(newSelecteds);
+            // console.log(newSelecteds);
         }
         else {
             setSelected([]);
+            // console.log([]);
         }
-        console.log(selected);
     };
 
     const handleClick = (event, doc_id) => {
@@ -265,10 +275,12 @@ const DataTable = (props) => {
 
         setSelected(newSelected);
 
-        console.log(selected);
+        // console.log("NewSelected", newSelected);
     };
 
     const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
+    const dataLength = data === undefined ? 0 : data.length;
+    const selectedLength = selected === undefined ? 0 : selected.length;
 
     React.useEffect(() => {
         if(pageCount !== -1) {
@@ -281,6 +293,7 @@ const DataTable = (props) => {
                 console.log(error);
             })
         }
+        // console.log(data);
     }, [pageCount]);
 
     return (
@@ -289,7 +302,7 @@ const DataTable = (props) => {
                 <TableContainer id="data-table" style={{ height: (window.innerHeight - 230), width: (window.innerWidth - 60), overflow: 'scroll', overflowX: 'hidden' }}>
                     <InfiniteScroll
                         scrollableTarget="data-table"
-                        dataLength={data.length}
+                        dataLength={dataLength}
                         hasMore={isNext}
                         next={loadMoreData}
                         loader={
@@ -303,8 +316,8 @@ const DataTable = (props) => {
                                 <TableRow>
                                     <TableCell padding="checkbox">
                                         <Checkbox
-                                            indeterminate={selected.length > 0 && selected.length < data.length}
-                                            checked={data.length > 0 && selected.length === data.length}
+                                            indeterminate={selectedLength > 0 && selectedLength < dataLength}
+                                            checked={dataLength > 0 && selectedLength === dataLength}
                                             onChange={handleSelectAllClick}
                                             inputProps={{ 'aria-label': 'select all desserts' }}
                                             // className={classes.tableHeading}
@@ -348,7 +361,7 @@ const DataTable = (props) => {
                                         >
                                             <TableCell padding="checkbox">
                                                 <Checkbox
-                                                    checked={isSelected(row['doc_id'])}
+                                                    checked={isItemSelected}
                                                     onClick={(event) => handleClick(event, row['doc_id'])}
                                                     className={classes.tableRow}
                                                     className={classes.checkbox}
@@ -371,12 +384,17 @@ const DataTable = (props) => {
     )
 }
 
-const Bar = ({ rowsSelected }) => {
+const Bar = ({ 
+    data, setData,
+    selected, setSelected
+ }) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
     const [ openDeleteInvoice, setOpenDeleteInvoice ] = React.useState(false);
     const [ openEditInvoice, setOpenEditInvoice ] = React.useState(false);
     const [ openViewCorrespondence, setOpenViewCorrespondence ] = React.useState(false);
+
+    const [ selectedInvoiceDetails, setSelectedInvoiceDetails ] = React.useState([]);
 
     const handleAddInvoice = () => {
         setOpenAddInvoice(true);
@@ -387,12 +405,22 @@ const Bar = ({ rowsSelected }) => {
     }
 
     const handleEditInvoice = () => {
+        // console.log(selectedInvoiceDetails)
         setOpenEditInvoice(true);
     }
 
     const handleViewCorrespondence = () => {
         setOpenViewCorrespondence(true);
     }
+
+    React.useEffect(() => {
+        setSelectedInvoiceDetails(data.filter(row => selected.indexOf(row['doc_id']) != -1));
+        // console.log(selectedInvoiceDetails)
+    }, [ selected ])
+
+    const isDisabledEditButton = (selected.length !== 1);
+    const isDisabledViewCorrespondenceButton = (selected.length === 0);
+    const isDisabledDeleteButton = (selected.length === 0)
 
     return (
         <AppBar className={classes.ToolBar}>
@@ -408,12 +436,16 @@ const Bar = ({ rowsSelected }) => {
                     </div>
                     <div style={{ paddingRight: '10px', paddingTop: '10px', }}>
                         <Button 
-                            className={classes.Button} 
+                            className={isDisabledViewCorrespondenceButton ? classes.DisabledButton : classes.Button} 
                             onClick={handleViewCorrespondence}
+                            disabled={isDisabledViewCorrespondenceButton}
                         >
                             View Correspondence
                         </Button>
-                        <ViewCorrespondencePage open={openViewCorrespondence} setOpen={setOpenViewCorrespondence}/>
+                        <ViewCorrespondencePage 
+                            open={openViewCorrespondence} setOpen={setOpenViewCorrespondence}
+                            selectedInvoiceDetails={selectedInvoiceDetails}
+                        />
                     </div>
                 </div>
                 <div style={{ position: 'fixed', right: 40, display: 'flex' }}>
@@ -428,22 +460,33 @@ const Bar = ({ rowsSelected }) => {
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button 
-                            className={classes.Button} 
+                            className={isDisabledEditButton ? classes.DisabledButton : classes.Button} 
                             onClick={handleEditInvoice}
+                            disabled={isDisabledEditButton}
                         >
                             <EditIcon style={{ paddingRight: '10px' }}/>
                             Edit
                         </Button>
-                        <EditInvoicePage open={openEditInvoice} setOpen={setOpenEditInvoice}/>
+                        <EditInvoicePage 
+                            open={openEditInvoice} setOpen={setOpenEditInvoice}
+                            selectedInvoiceDetails={selectedInvoiceDetails}
+                            // invoiceNumber={selected[0].doc_id} 
+                            // invoiceAmount={selected[0].total_open_amount} 
+                            // notes={selected[0].notes} 
+                        />
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button 
-                            className={classes.Button} 
+                            className={isDisabledDeleteButton ? classes.DisabledButton : classes.Button} 
                             onClick={handleDeleteInvoice}
+                            disabled={isDisabledDeleteButton}
                         >
                             — Delete
                         </Button>
-                        <DeleteInvoicePage open={openDeleteInvoice} setOpen={setOpenDeleteInvoice}/>
+                        <DeleteInvoicePage 
+                            open={openDeleteInvoice} setOpen={setOpenDeleteInvoice}
+                            selected={selected}
+                        />
                     </div>
                     <div style={{ paddingTop: '10px', }}>
                         <Input
@@ -463,8 +506,12 @@ const Bar = ({ rowsSelected }) => {
     )
 }
 
-const LandingPage = (props) => {
+const LandingPage = () => {
     const classes = useStyles();
+    const [ data, setData ] = React.useState([]);
+    const [ selected, setSelected ] = React.useState([]);
+
+
     return (
         <div className={classes.LandingPage}>
             <div style={{paddingLeft: '20px'}}>
@@ -475,10 +522,16 @@ const LandingPage = (props) => {
             </div>
             <div className={classes.InvoiceTable}>
                 <div style={{ paddingLeft: '19px' }}>
-                    <Bar/>
+                    <Bar
+                        data={data} setData={setData}
+                        selected={selected} setSelected={setSelected}
+                    />
                 </div>
                 <div>
-                    <DataTable />
+                    <DataTable
+                        data={data} setData={setData}
+                        selected={selected} setSelected={setSelected}
+                    />
                 </div>
             </div>
         </div>
