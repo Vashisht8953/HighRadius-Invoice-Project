@@ -1,6 +1,6 @@
 ### TODO: A utility class which will be created by the user , with Class name as " _[your roll number]" ,
 # TODO: all transformations should be written inside a function which will be called inside the predict method
-class _1405043():
+class _1830196():
 
     ## TODO: Please note that document id should be present till the getPredictions method
     def __tranformation1(self,data):
