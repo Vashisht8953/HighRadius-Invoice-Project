@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { InputAdornment, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { Dialog, IconButton, Button, Input } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -138,6 +138,7 @@ const EditMenu = ({
 const EditInvoicePage = ({ 
     open, setOpen,
     selectedInvoiceDetails,
+    setDataPageCount
     // invoiceNumber,
     // invoiceAmount,
     // notes,
@@ -166,6 +167,8 @@ const EditInvoicePage = ({
             })
             .then((response) => {
                 console.log(response);
+                handleClose();
+                setDataPageCount(0);
             })
             .catch((error) => {
                 console.log(error);

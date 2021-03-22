@@ -4,7 +4,7 @@ public class InvoiceDetails {
 //	private String business_code;
 	private String name_customer;
 	private String cust_number;
-//	private String clear_date;
+	private String clear_date;
 //	private int business_year;
 	private Long doc_id;
 //	private String posting_date;
@@ -41,12 +41,12 @@ public class InvoiceDetails {
 		this.name_customer = name_customer;
 	}
 	
-//	public String getClearDate() {
-//		return clear_date;
-//	}
-//	public void setClearDate(String clear_date) {
-//		this.clear_date = clear_date;
-//	}
+	public String getClearDate() {
+		return clear_date;
+	}
+	public void setClearDate(String clear_date) {
+		this.clear_date = clear_date;
+	}
 	
 //	public int getBusinessYear() {
 //		return business_year;

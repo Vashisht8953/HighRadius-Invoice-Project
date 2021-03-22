@@ -227,11 +227,11 @@ const DataTable = ({
     data, setData,
     selected, setSelected,
     searchKeyword, searchResults,
-    searchPageCount, setSearchPageCount
+    searchPageCount, setSearchPageCount,
+    dataPageCount, setDataPageCount
 }) => {
     const classes = useStyles();
     const [ isNext, setNext ] = React.useState(false);
-    const [ dataPageCount, setDataPageCount ] = React.useState(0);
 
     const loadMoreData = () => {
         if(viewSearchResults) {
@@ -293,7 +293,7 @@ const DataTable = ({
             })
         }
         // console.log(data);
-    }, [dataPageCount]);
+    }, [ dataPageCount ]);
 
     const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
     const dataLength = data === undefined ? 0 : data.length;
@@ -347,9 +347,9 @@ const DataTable = ({
                                     <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
                                     <TableCell key={'cust_number'} className={classes.tableHeading}>Customer #</TableCell>
                                     <TableCell key={'doc_id'} className={classes.tableHeading}>Sales Order #</TableCell>
-                                    <TableCell key={'total_open_amount'} className={classes.tableHeading}>Sales Order Amount</TableCell>
-                                    <TableCell key={'due_in_date'} className={classes.tableHeading}>Due Date</TableCell>
-                                    <TableCell key={'clear_date'} className={classes.tableHeading}>Predicted Payment Date</TableCell>
+                                    <TableCell key={'total_open_amount'} className={classes.tableHeading} align="right">Sales Order Amount</TableCell>
+                                    <TableCell key={'due_in_date'} className={classes.tableHeading} align="right">Due Date</TableCell>
+                                    <TableCell key={'clear_date'} className={classes.tableHeading} align="right">Predicted Payment Date</TableCell>
                                     <TableCell key={'predicted_aging_bucket'} className={classes.tableHeading}>Predicted Aging Bucket</TableCell>
                                     <TableCell key={'notes'} className={classes.tableHeading}>Notes</TableCell>
                                 </TableRow>
@@ -374,9 +374,17 @@ const DataTable = ({
                                                     size='small'
                                                 />
                                             </TableCell>
-                                            {Object.keys(row).map((cell) => (
+                                            {/* {Object.keys(row).map((cell) => (
                                                 <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
-                                            ))}
+                                            ))} */}
+                                            <TableCell className={classes.tableRow}>{row['name_customer']}</TableCell>
+                                            <TableCell className={classes.tableRow}>{row['cust_number']}</TableCell>
+                                            <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
+                                            <TableCell className={classes.tableRow} align="right">{row['total_open_amount']}</TableCell>
+                                            <TableCell className={classes.tableRow} align="right">{row['due_in_date']}</TableCell>
+                                            <TableCell className={classes.tableRow} align="right">{row['clear_date'] === null ? '--' : row['clear_date']}</TableCell>
+                                            <TableCell className={classes.tableRow}>--</TableCell>
+                                            <TableCell className={classes.tableRow}>{row['notes'] === null ? '--' : row['notes']}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -394,7 +402,8 @@ const Bar = ({
     selected, setSelected,
     searchKeyword, setSearchKeyword,
     searchResults, setSearchResults,
-    searchPageCount, setSearchPageCount
+    searchPageCount, setSearchPageCount,
+    setDataPageCount
  }) => {
     const classes = useStyles();
     const [ openAddInvoice, setOpenAddInvoice ] = React.useState(false);
@@ -481,7 +490,10 @@ const Bar = ({
                         >
                             + Add
                         </Button>
-                        <AddInvoicePage open={openAddInvoice} setOpen={setOpenAddInvoice}/>
+                        <AddInvoicePage 
+                            open={openAddInvoice} setOpen={setOpenAddInvoice}
+                            setDataPageCount={setDataPageCount}
+                        />
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button 
@@ -495,6 +507,7 @@ const Bar = ({
                         <EditInvoicePage 
                             open={openEditInvoice} setOpen={setOpenEditInvoice}
                             selectedInvoiceDetails={selectedInvoiceDetails}
+                            setDataPageCount={setDataPageCount}
                             // invoiceNumber={selected[0].doc_id} 
                             // invoiceAmount={selected[0].total_open_amount} 
                             // notes={selected[0].notes} 
@@ -511,6 +524,7 @@ const Bar = ({
                         <DeleteInvoicePage 
                             open={openDeleteInvoice} setOpen={setOpenDeleteInvoice}
                             selected={selected}
+                            setDataPageCount={setDataPageCount}
                         />
                     </div>
                     <div style={{ paddingTop: '10px', }}>
@@ -536,6 +550,7 @@ const Bar = ({
 const LandingPage = () => {
     const classes = useStyles();
     const [ data, setData ] = React.useState([]);
+    const [ dataPageCount, setDataPageCount ] = React.useState(0);
     const [ selected, setSelected ] = React.useState([]);
 
     const [ searchKeyword, setSearchKeyword ] = React.useState('');
@@ -558,6 +573,7 @@ const LandingPage = () => {
                         searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword}
                         searchResults={searchResults} setSearchResults={setSearchResults}
                         searchPageCount={searchPageCount} setSearchPageCount={setSearchPageCount}
+                        setDataPageCount={setDataPageCount}
                     />
                 </div>
                 <div>
@@ -566,6 +582,7 @@ const LandingPage = () => {
                         selected={selected} setSelected={setSelected}
                         searchKeyword={searchKeyword} searchResults={searchResults}
                         searchPageCount={searchPageCount} setSearchPageCount={setSearchPageCount}
+                        dataPageCount={dataPageCount} setDataPageCount={setDataPageCount}
                     />
                 </div>
             </div>

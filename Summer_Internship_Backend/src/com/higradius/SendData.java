@@ -52,7 +52,7 @@ public class SendData extends HttpServlet {
 			
 			Statement st = conn.createStatement();
 //			String sql_statement = "SELECT * FROM invoice_details ORDER BY doc_id LIMIT " + page + ", 10";
-			String sql_statement = "SELECT cust_number, name_customer, doc_id, total_open_amount, due_in_date from invoice_details ORDER BY doc_id ASC LIMIT " + page + ", " + NO_OF_ROWS_TO_GET;
+			String sql_statement = "SELECT cust_number, name_customer, doc_id, total_open_amount, due_in_date, clear_date, notes from invoice_details ORDER BY doc_id ASC LIMIT " + page + ", " + NO_OF_ROWS_TO_GET;
 			ResultSet rs = st.executeQuery(sql_statement);
 			
 			ArrayList<InvoiceDetails> data = new ArrayList<>();
@@ -61,7 +61,7 @@ public class SendData extends HttpServlet {
 //				inv.setBusinessCode(rs.getString("business_code"));
 				inv.setNameCustomer(rs.getString("name_customer"));
 				inv.setCustNumber(rs.getString("cust_number"));
-//				inv.setClearDate(rs.getString("clear_date"));
+				inv.setClearDate(rs.getString("clear_date") == null ? "" : rs.getString("clear_date").substring(0, 10));
 //				inv.setBusinessYear(rs.getInt("business_year"));
 				inv.setDocID(rs.getLong("doc_id"));
 //				inv.setPostingDate(rs.getString("posting_date"));
@@ -75,6 +75,7 @@ public class SendData extends HttpServlet {
 //				inv.setCustPaymentTerms(rs.getString("cust_payment_terms"));
 //				inv.setInvoiceID(rs.getLong("invoice_id"));
 //				inv.setIsOpen(rs.getInt("isOpen"));
+				inv.setNotes(rs.getString("notes"));
 				
 //				System.out.println(inv);
 				

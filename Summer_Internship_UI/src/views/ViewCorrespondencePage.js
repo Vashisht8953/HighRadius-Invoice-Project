@@ -128,9 +128,15 @@ const InvoiceDetailsTable = ({ selectedInvoiceDetails }) => {
                             <TableCell className={classes.tableRow}>{row.dueDate}</TableCell>
                             <TableCell className={classes.tableRow}>{row.currency}</TableCell>
                             <TableCell className={classes.tableRow}>{row.openAmount}</TableCell> */}
-                            {Object.keys(row).map((cell) => (
+                            {/* {Object.keys(row).map((cell) => (
                                 <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
-                            ))}
+                            ))} */}
+                            <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
+                            <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
+                            <TableCell className={classes.tableRow}>{row['clear_date']}</TableCell>
+                            <TableCell className={classes.tableRow}>{row['due_in_date']}</TableCell>
+                            <TableCell className={classes.tableRow}>USD</TableCell>
+                            <TableCell className={classes.tableRow}>{row['total_open_amount']}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

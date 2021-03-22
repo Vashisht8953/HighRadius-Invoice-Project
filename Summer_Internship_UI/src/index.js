@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './MyApp';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 import theme from '../src/utils/theme';
-import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {

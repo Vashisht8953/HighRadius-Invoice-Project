@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { InputAdornment, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { Dialog, IconButton, Button, Input } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -9,7 +9,6 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { CloseIcon, MandatoryFieldsLogo } from '../assets';
-import { ModeComment } from '@material-ui/icons';
 import { Fragment } from 'react';
 
 // import moment from 'moment';
@@ -329,7 +328,7 @@ const AddMenu = ({
     )
 }
 
-const AddInvoicePage = ({ open, setOpen }) => {
+const AddInvoicePage = ({ open, setOpen, setDataPageCount }) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
@@ -366,6 +365,7 @@ const AddInvoicePage = ({ open, setOpen }) => {
             )
             .then((response) => {
                 console.log(response);
+                setDataPageCount(0);
             })
             .catch((error) => {
                 console.log(error);

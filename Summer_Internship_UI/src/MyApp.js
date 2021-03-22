@@ -1,9 +1,8 @@
 import React from 'react';
 import { ROLL_NUMBER } from './utils/constants';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { LandingPage, ViewCorrespondencePage, AddInvoicePage, DeleteInvoicePage, EditInvoicePage } from './views';
+import { LandingPage } from './views';
 import { makeStyles } from '@material-ui/core';
-import { pxToVh, pxToVw } from './utils/theme';
 
 const useStyles = makeStyles((theme) => ({
     '@global': {

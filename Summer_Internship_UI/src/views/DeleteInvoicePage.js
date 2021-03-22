@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { InputAdornment, makeStyles } from '@material-ui/core';
-import { Dialog, IconButton, Button, Input } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import { Dialog, IconButton, Button } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const DeleteInvoicePage = ({ open, setOpen, selected }) => {
+const DeleteInvoicePage = ({ open, setOpen, selected, setDataPageCount }) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
@@ -68,6 +68,8 @@ const DeleteInvoicePage = ({ open, setOpen, selected }) => {
         axios.post('http://localhost:8080/1830196/DeleteSalesOrder', {selected})
         .then((response) => {
             console.log(response);
+            handleClose();
+            setDataPageCount(0);
         })
         .catch((error) => {
             console.log(error);
