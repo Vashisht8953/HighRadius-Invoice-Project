@@ -235,10 +235,10 @@ const AddMenu = ({
                             Customer No.<div style={{ color: 'red', paddingLeft: '5px' }}>*</div>
                         </div>
                         <div style={{ paddingBottom: '45px', display: 'flex' }}>
-                            Invoice No.<div style={{ color: 'red', paddingLeft: '5px' }}>*</div>
+                            Sales Order No.<div style={{ color: 'red', paddingLeft: '5px' }}>*</div>
                         </div>
                         <div style={{ paddingBottom: '45px', display: 'flex' }}>
-                            Invoice Amount<div style={{ color: 'red', paddingLeft: '5px' }}>*</div>
+                            Sales Order Amount<div style={{ color: 'red', paddingLeft: '5px' }}>*</div>
                         </div>
                     </div>
                     <div>
@@ -328,7 +328,7 @@ const AddMenu = ({
     )
 }
 
-const AddInvoicePage = ({ open, setOpen, setDataPageCount }) => {
+const AddInvoicePage = ({ open, setOpen, setDataPageCount, setData }) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
@@ -365,6 +365,7 @@ const AddInvoicePage = ({ open, setOpen, setDataPageCount }) => {
             )
             .then((response) => {
                 console.log(response);
+                // setData([])
                 setDataPageCount(0);
             })
             .catch((error) => {

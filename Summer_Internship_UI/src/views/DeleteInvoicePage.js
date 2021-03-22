@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '33vh', 
         maxHeight: '33vh',
         minWidth: '30vw',
-        maxWidth: '30vw'
+        maxWidth: '30vw',
+        background: '#000000',
     },
     WindowHeader: {
         background: '#2A3E4C',

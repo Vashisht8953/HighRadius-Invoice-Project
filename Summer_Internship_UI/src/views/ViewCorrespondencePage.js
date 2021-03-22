@@ -111,9 +111,9 @@ const InvoiceDetailsTable = ({ selectedInvoiceDetails }) => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell className={classes.tableHeading}>Invoice Number</TableCell>
+                        <TableCell className={classes.tableHeading}>Sales Order Number</TableCell>
                         <TableCell className={classes.tableHeading}>PO Number</TableCell>
-                        <TableCell className={classes.tableHeading}>Invoice Date</TableCell>
+                        <TableCell className={classes.tableHeading}>Sales Order Date</TableCell>
                         <TableCell className={classes.tableHeading}>Due Date</TableCell>
                         <TableCell className={classes.tableHeading}>Currency</TableCell>
                         <TableCell className={classes.tableHeading}>Open Amount($)</TableCell>
@@ -149,7 +149,7 @@ const Template1 = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
     return (
         <div className={classes.Body}>
-            Subject: <b>Invoice Details - {"{Account Name}"}</b>
+            Subject: <b>Sales Order Details - {"{Account Name}"}</b>
             <p>
                 Dear Sir/Madam, <br/>
                 Greetings! 
@@ -186,7 +186,7 @@ const Template2 = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
     return(
         <div className={classes.Body}>
-            Subject: <b>Invoice Details - {"{Account Name}"}</b>
+            Subject: <b>Sales Order Details - {"{Account Name}"}</b>
             <p>
                 Dear Sir/Madam,
             </p>

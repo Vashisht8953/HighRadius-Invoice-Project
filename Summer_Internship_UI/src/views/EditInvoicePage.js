@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '60vh', 
         maxHeight: '60vh',
         minWidth: '30vw',
-        maxWidth: '30vw'
+        maxWidth: '30vw',
+        background: '#000000',
     },
     WindowHeader: {
         background: '#2A3E4C',
@@ -100,9 +101,9 @@ const EditMenu = ({
 
     return (
         <div style={{ display: 'flex' }}>
-            <div style={{ paddingLeft: '20px', paddingRight: '30px', paddingTop: '5px', fontSize: '17px' }}>
-                <div style={{ paddingBottom: '45px', display: 'flex' }}>
-                    Invoice Amount
+            <div style={{ paddingLeft: '10px', paddingTop: '5px', fontSize: '17px' }}>
+                <div style={{ paddingBottom: '45px', paddingRight: '10px', display: 'flex', width: '160px' }}>
+                    Sales Order Amount
                 </div>
                 <div style={{ paddingBottom: '45px', display: 'flex' }}>
                     Notes
@@ -138,7 +139,7 @@ const EditMenu = ({
 const EditInvoicePage = ({ 
     open, setOpen,
     selectedInvoiceDetails,
-    setDataPageCount
+    setDataPageCount, setData
     // invoiceNumber,
     // invoiceAmount,
     // notes,
@@ -168,6 +169,7 @@ const EditInvoicePage = ({
             .then((response) => {
                 console.log(response);
                 handleClose();
+                // setData([])
                 setDataPageCount(0);
             })
             .catch((error) => {

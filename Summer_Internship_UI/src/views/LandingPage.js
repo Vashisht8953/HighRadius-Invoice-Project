@@ -382,7 +382,7 @@ const DataTable = ({
                                             <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
                                             <TableCell className={classes.tableRow} align="right">{row['total_open_amount']}</TableCell>
                                             <TableCell className={classes.tableRow} align="right">{row['due_in_date']}</TableCell>
-                                            <TableCell className={classes.tableRow} align="right">{row['clear_date'] === null ? '--' : row['clear_date']}</TableCell>
+                                            <TableCell className={classes.tableRow} align="right">{row['clear_date'] === '' || row['clear_date'] === null ? '--' : row['clear_date']}</TableCell>
                                             <TableCell className={classes.tableRow}>--</TableCell>
                                             <TableCell className={classes.tableRow}>{row['notes'] === null ? '--' : row['notes']}</TableCell>
                                         </TableRow>
@@ -454,7 +454,8 @@ const Bar = ({
 
     const isDisabledEditButton = (selected.length !== 1);
     const isDisabledViewCorrespondenceButton = (selected.length === 0);
-    const isDisabledDeleteButton = (selected.length === 0)
+    const isDisabledDeleteButton = (selected.length === 0);
+    const isDisabledPredictButton = (selected.length === 0);
 
     return (
         <AppBar className={classes.ToolBar}>
@@ -462,8 +463,8 @@ const Bar = ({
                 <div style={{ display: 'flex' }}>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
                         <Button 
-                            className={classes.Button}
-                            // disabled={}
+                            className={isDisabledPredictButton ? classes.DisabledButton : classes.Button}
+                            disabled={isDisabledPredictButton}
                         >
                             Predict
                         </Button>
@@ -492,7 +493,7 @@ const Bar = ({
                         </Button>
                         <AddInvoicePage 
                             open={openAddInvoice} setOpen={setOpenAddInvoice}
-                            setDataPageCount={setDataPageCount}
+                            setDataPageCount={setDataPageCount} setData={setData}
                         />
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>
@@ -507,7 +508,7 @@ const Bar = ({
                         <EditInvoicePage 
                             open={openEditInvoice} setOpen={setOpenEditInvoice}
                             selectedInvoiceDetails={selectedInvoiceDetails}
-                            setDataPageCount={setDataPageCount}
+                            setDataPageCount={setDataPageCount} setData={setData}
                             // invoiceNumber={selected[0].doc_id} 
                             // invoiceAmount={selected[0].total_open_amount} 
                             // notes={selected[0].notes} 
