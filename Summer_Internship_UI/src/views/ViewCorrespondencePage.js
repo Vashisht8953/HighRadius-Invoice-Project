@@ -122,15 +122,6 @@ const InvoiceDetailsTable = ({ selectedInvoiceDetails }) => {
                 <TableBody component="th" scope="row">
                     {(selectedInvoiceDetails === undefined ? [] : selectedInvoiceDetails).map((row) => (
                         <TableRow className={classes.tableBody}>
-                            {/* <TableCell className={classes.tableRow}>{row.invoiceNumber}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.PONumber}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.invoiceDate}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.dueDate}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.currency}</TableCell>
-                            <TableCell className={classes.tableRow}>{row.openAmount}</TableCell> */}
-                            {/* {Object.keys(row).map((cell) => (
-                                <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
-                            ))} */}
                             <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
                             <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
                             <TableCell className={classes.tableRow}>{row['clear_date']}</TableCell>
@@ -223,7 +214,6 @@ const Template2 = ({ selectedInvoiceDetails }) => {
 
 const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
     const classes = useStyles();
-    // const [ open, setOpen ] = React.useState(true);
     const [ maxWidth ] = React.useState('lg');
     const [ fullWidth ] = React.useState(false);
     const [ template, setTemplate ] = React.useState('Template 1');
@@ -238,15 +228,16 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
     }
 
     const handleDownload = () => {
-        // var pdf = new jsPDF();
+        var pdf = new jsPDF(template === 'Template 1' ? <Template1/> : <Template2/>);
         // pdf.fromHTML(template === 'Template 1' ? <Template1/> : <Template2/>);
-        html2canvas(template === 'Template 1' ? <Template1/> : <Template2/>) 
-        .then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'JPEG', 0, 0);
-            pdf.save("download.pdf");
-        })
+        // html2canvas(template === 'Template 1' ? <Template1/> : <Template2/>) 
+        // .then((canvas) => {
+        //     const imgData = canvas.toDataURL('image/png');
+        //     const pdf = new jsPDF();
+        //     pdf.addImage(imgData, 'JPEG', 0, 0);
+        //     pdf.save("download.pdf");
+        // })
+        pdf.save('download.pdf');
     }
 
     return (

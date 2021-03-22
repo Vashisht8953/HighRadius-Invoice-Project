@@ -11,8 +11,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import { CloseIcon, MandatoryFieldsLogo } from '../assets';
 import { Fragment } from 'react';
 
-// import moment from 'moment';
-
 const useStyles = makeStyles((theme) => console.log(theme) || ({
     dialogPaper: {
         minHeight: '60vh', 
@@ -51,16 +49,13 @@ const useStyles = makeStyles((theme) => console.log(theme) || ({
         color: '#97A1A9',
         background: '#2A3E4C',
         paddingBlock: '40px',
-        // border: '2px solid white',
     },
     Column1: {
-        // border: '2px solid yellow',
         width: '30vw',
         height: '30vh',
         paddingLeft: '40px'
     },
     Column2: {
-        // border: '2px solid red',
         width: '30vw',
         height: '30vh',
         paddingLeft: '50px'
@@ -68,7 +63,6 @@ const useStyles = makeStyles((theme) => console.log(theme) || ({
     InputBox: {
         color: '#FFFFFF',
         width: '205px',
-        // borderBottom: 'none',
         border: '1px solid #356680',
         background: '#283A46',
         borderRadius: 10,
@@ -78,7 +72,6 @@ const useStyles = makeStyles((theme) => console.log(theme) || ({
     ErrorInputBox: {
         color: '#FFFFFF',
         width: '205px',
-        // borderBottom: 'none',
         border: '1px solid #FF5B5B',
         background: '#283A46',
         borderRadius: 10,
@@ -151,7 +144,7 @@ const MandatoryFieldsPopUp = ({ open, setOpen }) => {
     );
 }
 
-const DatePicker = ({ dueDate, setDueDate, addButtonClicked, setAddButtonClicked, isErrorDueDate }) => {
+const DatePicker = ({ dueDate, setDueDate, setAddButtonClicked, isErrorDueDate }) => {
     const classes = useStyles();
 
     const handleDueDate = (date) => {
@@ -250,7 +243,6 @@ const AddMenu = ({
                                 value={customerName}
                                 onChange={(event) => handleCustomerName(event)}
                                 error={isErrorCustomerName}
-                                // errorStyle={{border: '1px solid white'}}
                             >
                             </Input>
                         </div>
@@ -308,7 +300,6 @@ const AddMenu = ({
                                 addButtonClicked={addButtonClicked}
                                 setAddButtonClicked={setAddButtonClicked}
                                 isErrorDueDate={isErrorDueDate}
-                                // formatDate={(date) => moment(date).format('DD/MM/YYYY')}
                             />
                         </div>
                         <div style={{ paddingBottom: '30px' }}>
@@ -366,7 +357,7 @@ const AddInvoicePage = ({ open, setOpen, setDataPageCount, setData }) => {
             .then((response) => {
                 console.log(response);
                 // setData([])
-                setDataPageCount(0);
+                // setDataPageCount(0);
             })
             .catch((error) => {
                 console.log(error);

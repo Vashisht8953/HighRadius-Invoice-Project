@@ -7,7 +7,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { CloseIcon } from '../assets';
 
-
 const useStyles = makeStyles((theme) => ({
     dialogPaper: {
         minHeight: '33vh', 
@@ -35,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '15px',
         color: '#97A1A9',
         background: '#2A3E4C',
-        // paddingBlock: '40px',
-        // border: '2px solid white',
     },
     CancelButton: {
         color: '#FFF',

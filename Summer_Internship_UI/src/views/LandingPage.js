@@ -53,31 +53,9 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '20px',
         paddingLeft: '20px',
         width: '200px',
-        // top: '100px',
-        // left: '30px',
-        // width: '141px',
-        // height: '31px',
-        // paddingLeft: '40px'
-    },
-    InvoiceTable: {
-        // display: 'flex',
-        // flexDirection: 'column',
-        // top: '20%',
-        // border: '10px solid black',
-        // top: '161px',
-        // left: '30px',
-        // width: '90%',
-        // height: '759.991px',
-        // border: '10px solid black',
-        // border: '10px solid black',
     },
     ToolBar: {
-        // top: '2s0%',
         display: 'flex',
-        // width: '1603.620px',
-        // width: '80%',
-        // height: 600, 
-        // width: 1553.620,
         width: window.innerWidth - 40,
         position: 'static',
         background: '#273D49CC',
@@ -96,11 +74,9 @@ const useStyles = makeStyles((theme) => ({
     },
     DataTable: {
         width: window.innerWidth - 80,
-        // border: '10px solid black',
         paddingLeft: '20px',
         paddingBottom: '20px',
         opacity: 1,
-        // padding
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
     },
@@ -133,25 +109,6 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: 'none',
         height: '10px',
     },
-    // PredictButton: {
-    //     color: '#FFFFFF',
-    //     background: '#97A1A9',
-    //     // font: 'Ubuntu',
-    //     // fontFamily: 'normal',
-    //     textTransform: 'none',
-    //     paddingLeft: '10px',
-    //     paddingRight: '10px',
-    //     height: '45px',
-    //     borderRadius: 10,
-    // },
-    // ViewCorrespondence: {
-    //     color: '#97A1A9',
-    //     background: 'transparent',
-    //     border: '1px solid #97A1A9',
-    //     borderRadius: 10,
-    //     textTransform: 'none',
-    //     height: '45px',
-    // },
     searchByInvoiceNumber: {
         color: '#97A1A9',
         borderBottom: 'none',
@@ -165,22 +122,6 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: '1px solid #356680',
         width: '340px',
     },
-    // DeleteButton: {
-    //     color: '#97A1A9',
-    //     border: '1px solid #97A1A9',
-    //     borderRadius: 10,
-    //     textTransform: 'none',
-    //     height: '45px',
-    //     padding: '15px'
-    // },
-    // EditButton: {
-    //     color: '#97A1A9',
-    //     border: '1px solid #97A1A9',
-    //     borderRadius: 10,
-    //     textTransform: 'none',
-    //     height: '45px',
-    //     padding: '15px',
-    // },
     Button: {
         color: '#FFFFFF',
         border: '1px solid #14AFF1',
@@ -252,11 +193,9 @@ const DataTable = ({
         if (event.target.checked) {
             const newSelecteds = data.map(n => n['doc_id']);
             setSelected(newSelecteds);
-            // console.log(newSelecteds);
         }
         else {
             setSelected([]);
-            // console.log([]);
         }
     };
 
@@ -275,10 +214,7 @@ const DataTable = ({
                 selected.slice(selectedIndex + 1)
           );
         }
-
         setSelected(newSelected);
-
-        // console.log("NewSelected", newSelected);
     };
 
     React.useEffect(() => {
@@ -292,7 +228,6 @@ const DataTable = ({
                 console.log(error);
             })
         }
-        // console.log(data);
     }, [ dataPageCount ]);
 
     const isSelected = (doc_id) => selected.indexOf(doc_id) !== -1;
@@ -325,25 +260,11 @@ const DataTable = ({
                                             checked={dataLength > 0 && selectedLength === dataLength}
                                             onChange={handleSelectAllClick}
                                             inputProps={{ 'aria-label': 'select all desserts' }}
-                                            // className={classes.tableHeading}
                                             className={classes.checkbox}
                                             disableRipple={true}
                                             size='small'
-                                            // iconStyle={{ fill: '#14AFF1' }}
-                                            // style={{
-                                            //     root: {
-                                            //         "&$checked": {
-                                            //             color: '#14AFF1',
-                                            //         }
-                                            //     }
-                                            // }}
                                         />
                                     </TableCell>
-                                    {/* {data[0] &&
-                                        Object.keys(data[0]).map((cellName) => (
-                                            <TableCell key={cellName} className={classes.tableHeading}>{cellName}</TableCell>
-                                        ))
-                                    } */}
                                     <TableCell key={'name_custoemr'} className={classes.tableHeading}>Customer Name</TableCell>
                                     <TableCell key={'cust_number'} className={classes.tableHeading}>Customer #</TableCell>
                                     <TableCell key={'doc_id'} className={classes.tableHeading}>Sales Order #</TableCell>
@@ -357,7 +278,6 @@ const DataTable = ({
                             <TableBody component="th" scope="row">
                                 {(searchKeyword === '' ? data : searchResults).map((row) => {
                                     const isItemSelected = isSelected(row['doc_id']);
-                                    
                                     return (
                                         <TableRow 
                                             className={classes.tableBody} 
@@ -374,9 +294,6 @@ const DataTable = ({
                                                     size='small'
                                                 />
                                             </TableCell>
-                                            {/* {Object.keys(row).map((cell) => (
-                                                <TableCell className={classes.tableRow}>{row[cell]}</TableCell>
-                                            ))} */}
                                             <TableCell className={classes.tableRow}>{row['name_customer']}</TableCell>
                                             <TableCell className={classes.tableRow}>{row['cust_number']}</TableCell>
                                             <TableCell className={classes.tableRow}>{row['doc_id']}</TableCell>
@@ -422,7 +339,6 @@ const Bar = ({
     }
 
     const handleEditInvoice = () => {
-        // console.log(selectedInvoiceDetails)
         setOpenEditInvoice(true);
     }
 
@@ -449,7 +365,6 @@ const Bar = ({
 
     React.useEffect(() => {
         setSelectedInvoiceDetails(data.filter(row => selected.indexOf(row['doc_id']) != -1));
-        // console.log(selectedInvoiceDetails)
     }, [ selected ])
 
     const isDisabledEditButton = (selected.length !== 1);
@@ -509,9 +424,6 @@ const Bar = ({
                             open={openEditInvoice} setOpen={setOpenEditInvoice}
                             selectedInvoiceDetails={selectedInvoiceDetails}
                             setDataPageCount={setDataPageCount} setData={setData}
-                            // invoiceNumber={selected[0].doc_id} 
-                            // invoiceAmount={selected[0].total_open_amount} 
-                            // notes={selected[0].notes} 
                         />
                     </div>
                     <div style={{ paddingRight: '20px', paddingTop: '10px', }}>

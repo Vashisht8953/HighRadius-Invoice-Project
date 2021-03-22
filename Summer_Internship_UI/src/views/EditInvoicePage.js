@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     InputBox: {
         color: '#FFFFFF',
         width: '240px',
-        // borderBottom: 'none',
         border: '1px solid #356680',
         background: '#283A46',
         borderRadius: 10,
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     ErrorInputBox: {
         color: '#FFFFFF',
         width: '240px',
-        // borderBottom: 'none',
         border: '1px solid #FF5B5B',
         background: '#283A46',
         borderRadius: 10,
@@ -82,7 +80,7 @@ const EditMenu = ({
     invoiceAmount, notes,
     newInvoiceAmount, setNewInvoiceAmount,
     newNotes, setNewNotes,
-    saveButtonClicked, setSaveButtonClicked,
+    setSaveButtonClicked,
     isErrorNewInvoiceAmount
 }) => {
     const classes = useStyles();
@@ -96,8 +94,6 @@ const EditMenu = ({
         setSaveButtonClicked(false);
         setNewNotes(event.target.value);
     }
-
-    
 
     return (
         <div style={{ display: 'flex' }}>
@@ -140,9 +136,6 @@ const EditInvoicePage = ({
     open, setOpen,
     selectedInvoiceDetails,
     setDataPageCount, setData
-    // invoiceNumber,
-    // invoiceAmount,
-    // notes,
 }) => {
     const classes = useStyles();
     const [ maxWidth ] = React.useState('lg');
@@ -170,14 +163,13 @@ const EditInvoicePage = ({
                 console.log(response);
                 handleClose();
                 // setData([])
-                setDataPageCount(0);
+                // setDataPageCount(0);
             })
             .catch((error) => {
                 console.log(error);
             })
         }
         setSaveButtonClicked(true);
-        // console.log(invoiceAmount, notes);
     }
 
     const handleReset = () => {
@@ -186,7 +178,6 @@ const EditInvoicePage = ({
     }
 
     const handleClose = () => {
-        // console.log(invoiceAmount);
         setOpen(false);
     }
 
