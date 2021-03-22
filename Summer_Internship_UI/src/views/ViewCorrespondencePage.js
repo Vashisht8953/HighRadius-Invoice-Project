@@ -7,6 +7,8 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { CloseIcon } from '../assets';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const useStyles = makeStyles((theme) => ({
     WindowHeader: {
@@ -215,9 +217,6 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
     const [ fullWidth ] = React.useState(false);
     const [ template, setTemplate ] = React.useState('Template 1');
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    }
 
     const handleClose = () => {
         setOpen(false);
@@ -225,6 +224,18 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
 
     const handleChange = (event) => {
         setTemplate(event.target.value);
+    }
+
+    const handleDownload = () => {
+        // var pdf = new jsPDF();
+        // pdf.fromHTML(template === 'Template 1' ? <Template1/> : <Template2/>);
+        html2canvas(template === 'Template 1' ? <Template1/> : <Template2/>) 
+        .then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'JPEG', 0, 0);
+            pdf.save("download.pdf");
+        })
     }
 
     return (
@@ -260,7 +271,7 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
                 </div>
             </MuiDialogTitle>
             <MuiDialogContent className={classes.Body}>
-                {template == 'Template 1' ? 
+                {template === 'Template 1' ? 
                     <Template1 selectedInvoiceDetails={selectedInvoiceDetails}/> : 
                     <Template2 selectedInvoiceDetails={selectedInvoiceDetails}/>
                 }
@@ -270,7 +281,7 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
                     <Button autofocus onClick={handleClose} className={classes.CancelButton}>Cancel</Button>
                 </div>
                 <div style={{ paddingRight: '20px' }}>
-                    <Button autofocus className={classes.DownloadButton}>Download</Button>
+                    <Button autofocus onClick={handleDownload} className={classes.DownloadButton}>Download</Button>
                 </div>
             </MuiDialogActions>
         </Dialog>
