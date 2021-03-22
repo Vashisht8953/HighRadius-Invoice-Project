@@ -69,7 +69,7 @@ public class AddInvoice extends HttpServlet {
 			String notes = final_values[5];
 			
 			Connection conn = GetConnection.connectToDB();
-			String sql_statement = "INSERT INTO invoice_details (name_customer, cust_number, doc_id, total_open_amount, due_in_date) values (?, ?, ?, ?, ?)";
+			String sql_statement = "INSERT INTO invoice_details (name_customer, cust_number, doc_id, total_open_amount, due_in_date, notes) values (?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement st = conn.prepareStatement(sql_statement);
 			st.setString(1, customerName);
@@ -77,7 +77,7 @@ public class AddInvoice extends HttpServlet {
 			st.setString(3, invoiceNumber);
 			st.setString(4, invoiceAmount);
 			st.setString(5,  dueDate);
-//			st.setString(6, notes);
+			st.setString(6, notes);
 			
 			st.executeUpdate();
 //			conn.commit();
