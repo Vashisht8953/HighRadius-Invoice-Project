@@ -147,6 +147,11 @@ const InvoiceDetailsTable = ({ selectedInvoiceDetails }) => {
 
 const Template1 = ({ selectedInvoiceDetails }) => {
     const classes = useStyles();
+    var amountToBePaid = 0;
+    for(let i = 0; i < selectedInvoiceDetails.length; ++i) {
+        amountToBePaid += selectedInvoiceDetails[i]['total_open_amount']
+    }
+
     return (
         <div className={classes.Body}>
             Subject: <b>Sales Order Details - {"{Account Name}"}</b>
@@ -164,7 +169,7 @@ const Template1 = ({ selectedInvoiceDetails }) => {
                 <InvoiceDetailsTable selectedInvoiceDetails={selectedInvoiceDetails}/>
             </div>
             <p>
-                Total Amount to be Paid: <b>$124.00K</b>
+                Total Amount to be Paid: <b>${amountToBePaid}</b>
             </p>
             <p>
                 Incase you have already made the payment for the above items, please send us the details to ensure the payment is posted.<br/>
