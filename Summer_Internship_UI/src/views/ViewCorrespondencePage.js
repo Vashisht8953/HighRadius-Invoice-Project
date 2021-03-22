@@ -271,6 +271,7 @@ const ViewCorrespondencePage = ({ open, setOpen, selectedInvoiceDetails }) => {
                 </div>
             </MuiDialogTitle>
             <MuiDialogContent className={classes.Body}>
+
                 {template === 'Template 1' ? 
                     <Template1 selectedInvoiceDetails={selectedInvoiceDetails}/> : 
                     <Template2 selectedInvoiceDetails={selectedInvoiceDetails}/>
